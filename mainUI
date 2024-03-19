@@ -1,6 +1,10 @@
 package cse360;
 
+import java.util.ArrayList;
+
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 /*import javafx.event.ActionEvent;
 import javafx.event.EventHandler;*/
 import javafx.scene.Scene;
@@ -33,6 +37,7 @@ public class cse360 extends Application {
     public void start(Stage primaryStage) {
     	System.out.println("opened");
         primaryStage.setTitle("CSE360 Project");
+        ArrayList<Patient> testPatients = new ArrayList<Patient>();
         
         //Titles
         Text title1 = new Text("Doctor/Nurse Portal");
@@ -61,11 +66,18 @@ public class cse360 extends Application {
         Button button3 = new Button("Sign-up");
         
         //TextFields 
-        TextField field1 = new TextField("Username");
-        TextField field2 = new TextField("Password");
+        TextField field1 = new TextField();
+        field1.setPromptText("Username");
+        TextField field2 = new TextField();
+        field2.setPromptText("Password");
         
-        TextField field3 = new TextField("Username");
-        TextField field4 = new TextField("Password");
+        TextField field3 = new TextField();
+        field3.setPromptText("Username");
+        TextField field4 = new TextField();
+        field4.setPromptText("Password");
+        
+        TextField testOutput = new TextField();
+        testOutput.setPromptText("for testing only");
         
         //Separator
         Separator sep = new Separator();
@@ -83,6 +95,21 @@ public class cse360 extends Application {
         hbox.getChildren().add(vbox3);
         smallhbox.getChildren().addAll(button2, button3);
         
+        //implement button events
+        button3.setOnAction(new EventHandler<>() {
+            public void handle(ActionEvent event) {
+            	String username = field3.getText();
+            	String password = field4.getText();
+            	Patient newUser = new Patient(username, password);
+            	testPatients.add(newUser);
+            	testOutput.setText(testPatients.get(0).getUser());
+            }
+        });
+        
+        //changes to vbox
+        vbox3.getChildren().add(testOutput);      
+        
         primaryStage.setScene(new Scene(hbox, 700, 500));
         primaryStage.show();
     }
+}
