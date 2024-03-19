@@ -51,9 +51,6 @@ public class cse360 extends Application {
         VBox vbox1 = new VBox(10);
         vbox1.setPrefWidth(200);
         vbox1.setPadding(new Insets(5));
-        VBox vbox2 = new VBox(10);
-        vbox2.setPrefWidth(100);
-        vbox2.setPadding(new Insets(5));
         VBox vbox3 = new VBox(10);
         vbox3.setPrefWidth(200);
         vbox3.setPadding(new Insets(5));
@@ -77,17 +74,15 @@ public class cse360 extends Application {
         
         //add to vboxes
         vbox1.getChildren().addAll(title1, field1, field2, button1);
-        vbox2.getChildren().add(sep);
+        vbox1.setStyle("-fx-border-color: black");
         vbox3.getChildren().addAll(title2, field3, field4, smallhbox);
-        
+        vbox3.setStyle("-fx-border-color: black");
         
         //add to hbox
         hbox.getChildren().add(vbox1);
-        hbox.getChildren().add(vbox2);
         hbox.getChildren().add(vbox3);
         smallhbox.getChildren().addAll(button2, button3);
         
         primaryStage.setScene(new Scene(hbox, 700, 500));
         primaryStage.show();
     }
-}
