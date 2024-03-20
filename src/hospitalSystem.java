@@ -131,7 +131,6 @@ public class hospitalSystem extends Application {
                         testOutput.setText("User not found!");
                 }
             }
-
         });
 
         // changes to vbox

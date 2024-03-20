@@ -26,7 +26,6 @@ class Patient {
 	public Patient(String user, String pass) {
 		userName = user;
 		password = pass;
-
 	}
 
 	public Patient(String fNames, String lNames, String userNames, String bdays, String passwords, String phoneNums) {
