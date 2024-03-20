@@ -1,3 +1,10 @@
+/*
+ * CSE360 Project
+ * Team Tu43
+ * Team members: Daniel Chang, Cole Liu, Josh Ebe, Harsh Vassaram, Arvin Edouard
+ * Main coder: Daniel Chang
+ */
+
 package cse360;
 
 import java.util.ArrayList;
@@ -38,6 +45,7 @@ public class cse360 extends Application {
     	System.out.println("opened");
         primaryStage.setTitle("CSE360 Project");
         ArrayList<Patient> testPatients = new ArrayList<Patient>();
+        testPatients.add(new Patient("test", "testing"));
         
         //Titles
         Text title1 = new Text("Doctor/Nurse Portal");
@@ -55,10 +63,10 @@ public class cse360 extends Application {
         //Vertical Box 1
         VBox vbox1 = new VBox(10);
         vbox1.setPrefWidth(200);
-        vbox1.setPadding(new Insets(5));
+        vbox1.setPadding(new Insets(15));
         VBox vbox3 = new VBox(10);
         vbox3.setPrefWidth(200);
-        vbox3.setPadding(new Insets(5));
+        vbox3.setPadding(new Insets(15));
         
         //Button
         Button button1 = new Button("Sign-in");
@@ -102,7 +110,25 @@ public class cse360 extends Application {
             	String password = field4.getText();
             	Patient newUser = new Patient(username, password);
             	testPatients.add(newUser);
-            	testOutput.setText(testPatients.get(0).getUser());
+            	testOutput.setText("Sign-up successful!");
+            }
+        });
+        button2.setOnAction(new EventHandler<>() {
+            public void handle(ActionEvent event) {
+            	String username = field3.getText();
+            	String password = field4.getText();
+            	for(int i = 0; i < testPatients.size(); i++) {
+            		if(username.equals(testPatients.get(i).getUser())) {
+            			if(password.equals(testPatients.get(i).getPass())){
+            				testOutput.setText("Success");
+            			}
+            			else {
+            				testOutput.setText("Wrong Password");
+            			}
+            		}
+            		else
+            			testOutput.setText("User not found!");
+            	}
             }
         });
         
