@@ -1,0 +1,116 @@
+package cse360;
+
+import java.util.ArrayList;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+
+public class MainPage{
+	private Scene scene;
+	private HBox hbox;
+	private ArrayList<Patient> testPatients;
+	
+	
+	public MainPage() {
+		hbox = new HBox(10);
+		testPatients = new ArrayList<Patient>();
+
+		//Titles
+        Text title1 = new Text("Doctor/Nurse Portal");
+        title1.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        Text title2 = new Text("Patient Portal");
+        title2.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        
+        //Horizontal Box
+        hbox.setPadding(new Insets(50));
+        hbox.setAlignment(Pos.TOP_CENTER);
+        
+        HBox smallhbox = new HBox(10);
+        
+        //Vertical Box 1
+        VBox vbox1 = new VBox(10);
+        vbox1.setPrefWidth(200);
+        vbox1.setPadding(new Insets(15));
+        VBox vbox3 = new VBox(10);
+        vbox3.setPrefWidth(200);
+        vbox3.setPadding(new Insets(15));
+        
+        //Button
+        Button button1 = new Button("Sign-in");
+        Button button2 = new Button("Sign-in");
+        Button button3 = new Button("Sign-up");
+        
+        //TextFields 
+        TextField field1 = new TextField();
+        field1.setPromptText("Username");
+        TextField field2 = new TextField();
+        field2.setPromptText("Password");
+        
+        TextField field3 = new TextField();
+        field3.setPromptText("Username");
+        TextField field4 = new TextField();
+        field4.setPromptText("Password");
+        
+        TextField testOutput = new TextField();
+        testOutput.setPromptText("for testing only");
+        
+        //add to vboxes
+        vbox1.getChildren().addAll(title1, field1, field2, button1);
+        vbox1.setStyle("-fx-border-color: black");
+        vbox3.getChildren().addAll(title2, field3, field4, smallhbox, testOutput);
+        vbox3.setStyle("-fx-border-color: black");
+        
+        //add to hbox
+        hbox.getChildren().add(vbox1);
+        hbox.getChildren().add(vbox3);
+        smallhbox.getChildren().addAll(button2, button3);
+        
+        //implement button events
+        button3.setOnAction(new EventHandler<>() {
+            public void handle(ActionEvent event) {
+            	SignUpPage signUp = new SignUpPage();
+            	Scene newScene = signUp.toScene();
+            	hbox.getScene().setRoot(newScene.getRoot());
+            	
+            }
+        });
+        button2.setOnAction(new EventHandler<>() {
+            public void handle(ActionEvent event) {
+            	String username = field3.getText();
+            	String password = field4.getText();
+            	for(int i = 0; i < testPatients.size(); i++) {
+            		if(username.equals(testPatients.get(i).getUser())) {
+            			if(password.equals(testPatients.get(i).getPass())){
+            				testOutput.setText("Success");
+            			}
+            			else {
+            				testOutput.setText("Wrong Password");
+            			}
+            		}
+            		else
+            			testOutput.setText("User not found!");
+            	}
+            }
+        });  
+        
+        
+        scene = new Scene(hbox, 700, 500);
+	}
+	
+	public Scene toScene() {
+		return scene;
+	}
+	
+	
+	
+}
