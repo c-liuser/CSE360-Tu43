@@ -138,5 +138,13 @@ public class hospitalSystem extends Application {
 
         primaryStage.setScene(new Scene(hbox, 700, 500));
         primaryStage.show();
+
+        //to show intakeForm (temp)
+        //IntakeForm intakeForm = new IntakeForm();
+        //primaryStage.setScene(intakeForm.IntakeFormFunction(primaryStage));
+        
+        //to show visitnotes (temp)
+        //VisitNotes visitNotes = new VisitNotes();
+        //primaryStage.setScene(visitNotes.VisitNotesFunction(primaryStage));
     }
 }
