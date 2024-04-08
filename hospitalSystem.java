@@ -136,7 +136,10 @@ public class hospitalSystem extends Application {
 //        // changes to vbox
 //        vbox3.getChildren().add(testOutput);
         LoginPage login = new LoginPage();
-        primaryStage.setScene(new Scene(login.screen, 700, 500));
+        Scene scene = new Scene(login.screen, 700, 500);
+        login.scene = scene;
+        login.stage = primaryStage;
+        primaryStage.setScene(scene);
         primaryStage.show();
 
         //to show intakeForm (temp)

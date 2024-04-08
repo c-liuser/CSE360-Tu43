@@ -13,14 +13,20 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class LoginPage {
   HBox smallhbox;
@@ -29,6 +35,8 @@ public class LoginPage {
   
   public Label docLoginLB;
   public Label patientLoginLB;
+  public Label docComs;
+  public Label patientComs;
   
   public TextField docUsernameTF;
   public TextField docPasswordTF;
@@ -41,12 +49,19 @@ public class LoginPage {
   
   public Button patientSigninBT;
   public Button patientSignupBT;
+  public ToggleGroup tg;
+  
+  RadioButton docRB;
+  RadioButton nurseRB;
+  TilePane r;
   
   private Separator sep;
   
   public HBox screen;
   
   private String loginDB = "./src/loginDB.txt";
+  public Scene scene;
+  public Stage stage;
   
   public LoginPage() {
  // Titles
@@ -54,6 +69,11 @@ public class LoginPage {
     docLoginLB.setFont(Font.font("Arial", FontWeight.BOLD, 20));
     patientLoginLB = new Label("Patient Portal");
     patientLoginLB.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+    
+    docComs = new Label("");
+    docComs.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+    patientComs = new Label("");
+    patientComs.setFont(Font.font("Arial", FontWeight.BOLD, 10));
 
     // Horizontal Box
     screen = new HBox(10);
@@ -102,15 +122,25 @@ public class LoginPage {
     patientNewPasswordTF = new TextField();
     patientNewPasswordTF.setPromptText("Password");
     
+    // radio buttons
+    tg = new ToggleGroup();
+    r = new TilePane();
+    docRB = new RadioButton("Doctor"); 
+    docRB.setToggleGroup(tg);
+    nurseRB = new RadioButton("Nurse"); 
+    nurseRB.setToggleGroup(tg);
+    r.getChildren().add(docRB); 
+    r.getChildren().add(nurseRB); 
+    
     // Separator
     sep = new Separator();
     sep.setOrientation(Orientation.VERTICAL);
     sep.setHalignment(HPos.RIGHT);
 
     // add to vboxes
-    vbox1.getChildren().addAll(docLoginLB, docUsernameTF, docPasswordTF, docSigninBT);
+    vbox1.getChildren().addAll(docLoginLB, docUsernameTF, docPasswordTF, r, docSigninBT, docComs);
     vbox1.setStyle("-fx-border-color: black");
-    vbox3.getChildren().addAll(patientLoginLB, patientUsernameTF, patientPasswordTF, patientSigninBT,patientFnameTF, patientLnameTF, patientBirthdayTF, patientNewPasswordTF, patientSignupBT, testOutput);
+    vbox3.getChildren().addAll(patientLoginLB, patientUsernameTF, patientPasswordTF, patientSigninBT,patientFnameTF, patientLnameTF, patientBirthdayTF, patientNewPasswordTF, patientSignupBT, patientComs);
     vbox3.setStyle("-fx-border-color: black");
 
     // add to hbox
@@ -139,11 +169,11 @@ public class LoginPage {
           newUsername += bday.substring(0, rand_int1 + 1);
             
           newUsername = newUsername.toLowerCase();
-          testOutput.setText(newUsername);
+          patientComs.setText(newUsername);
           
           try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(loginDB, true));
-            writer.append(newUsername + newPassword + '\n');
+            writer.append("p:" + newUsername +" "+ newPassword + '\n');
             writer.close();
             System.out.println("Successfully wrote to the file.");
           } catch (IOException e) {
@@ -163,16 +193,19 @@ public class LoginPage {
     });
     patientSigninBT.setOnAction(new EventHandler<ActionEvent>() {
         public void handle(ActionEvent event) {
+            Boolean hasAccount = false;
             String username = patientUsernameTF.getText();
             String password = patientPasswordTF.getText();
+            String prefix = "p:";
             
             try {
               FileReader fr = new FileReader(loginDB);
               BufferedReader br = new BufferedReader(fr);
               String check = "1";
               while(check != null) {
-                if(check.equals(username + password)){
+                if(check.equals("p:"+username +" "+ password)){
                   br.close();
+                  hasAccount = true;
                   System.out.println("signin successful");
                   break;
                 }
@@ -183,6 +216,12 @@ public class LoginPage {
               // TODO Auto-generated catch block
               e.printStackTrace();
             } 
+            if(hasAccount) {
+              // navigate to doc page
+              patientComs.setText("signin successful");
+            }else {
+              patientComs.setText("Account does not exist");
+            }
 //            for (int i = 0; i < testPatients.size(); i++) {
 //                if (username.equals(testPatients.get(i).getUser())) {
 //                    if (password.equals(testPatients.get(i).getPass())) {
@@ -198,17 +237,26 @@ public class LoginPage {
     
     docSigninBT.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent event) {
+        Boolean hasAccount = false;
         String username = docUsernameTF.getText();
         String password = docPasswordTF.getText();
+        String prefix = "";
+        if(docRB.isSelected()) {
+          prefix = "d:";
+        }
+        if(nurseRB.isSelected()) {
+          prefix = "n:";
+        }
         
         try {
           FileReader fr = new FileReader(loginDB);
           BufferedReader br = new BufferedReader(fr);
           String check = "1";
           while(check != null) {
-            if(check.equals(username + password)){
+            if(check.equals(prefix + username +" "+ password)){
               br.close();
               System.out.println("signin successful");
+              hasAccount = true;
               break;
             }
             check = br.readLine();
@@ -218,6 +266,25 @@ public class LoginPage {
           // TODO Auto-generated catch block
           e.printStackTrace();
         } 
+        //navigation
+        if(hasAccount) {
+          // navigate to doc page
+          if(docRB.isSelected()) {
+            IntakeForm intake = new IntakeForm();
+            Window w = scene.getWindow();
+            if(w instanceof Stage) {
+              Stage s = (Stage) w;
+              s.setScene(intake.IntakeFormFunction(stage));
+            }
+          }
+          
+          if(nurseRB.isSelected()) {
+            //navigate to nurse
+          }
+        }else {
+          docComs.setText("Account does not exist");
+        }
+       
 //        for (int i = 0; i < testPatients.size(); i++) {
 //            if (username.equals(testPatients.get(i).getUser())) {
 //                if (password.equals(testPatients.get(i).getPass())) {
