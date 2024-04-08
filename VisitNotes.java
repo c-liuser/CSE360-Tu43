@@ -11,47 +11,57 @@ import javafx.stage.Stage;
 
 public class VisitNotes {
 	
+	BorderPane mainPane;
+	VBox UIBox, visitBox, historyBox, pastBox;
+	Button homeBtn, msgBtn, saveBtn;
+	Label visitNotes, patientHistory, healthIssues, prescriptions, immunizationHistory, pastVisits, findings, newPrescriptions;
+	TextField findingsField, newPrescripsField, issuesField, prescriptionsField, immunizationField, oldFindingsField, oldPrescripsField;
+	
 	public Scene VisitNotesFunction(Stage primaryStage) {
 				
 		//panes
-		BorderPane mainPane = new BorderPane();
-		VBox UIBox = new VBox();
-		VBox visitBox = new VBox();
-		VBox historyBox = new VBox();
-		VBox pastBox = new VBox();
+		mainPane = new BorderPane();
+		UIBox = new VBox();
+		visitBox = new VBox();
+		historyBox = new VBox();
+		pastBox = new VBox();
 				
 		//buttons
-		Button homeBtn = new Button("home");
+		homeBtn = new Button("home");
 		homeBtn.setPrefSize(50, 50);
-		Button msgBtn = new Button("msg");
+		msgBtn = new Button("msg");
 		msgBtn.setPrefSize(50, 50);
+		saveBtn = new Button("save");
+		saveBtn.setPrefSize(100, 50);
 				
 		//labels
-		Label visitNotes = new Label("Visit Notes");
+		visitNotes = new Label("Visit Notes");
 		visitNotes.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-		Label patientHistory = new Label("Patient History");
+		patientHistory = new Label("Patient History");
 		patientHistory.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-		Label healthIssues = new Label("Health Issues");
+		healthIssues = new Label("Health Issues");
 		healthIssues.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		Label prescriptions = new Label("Prescriptions");
+		prescriptions = new Label("Prescriptions");
 		prescriptions.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		Label immunizationHistory = new Label("Immunization History");
+		immunizationHistory = new Label("Immunization History");
 		immunizationHistory.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		Label pastVisits = new Label("Past Visits");
+		pastVisits = new Label("Past Visits");
 		pastVisits.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-		Label findings = new Label("Findings");
+		findings = new Label("Findings");
 		findings.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		Label newPrescriptions = new Label("New Prescriptions");
+		newPrescriptions = new Label("New Prescriptions");
 		newPrescriptions.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 				
 		//textfields
-		TextField findingsField = new TextField();
-		TextField newPrescripsField = new TextField();
-		TextField issuesField = new TextField();
-		TextField prescriptionsField = new TextField();
-		TextField immunizationField = new TextField();
-		TextField oldFindingsField = new TextField();
-		TextField oldPrescripsField = new TextField();
+		findingsField = new TextField();
+		findingsField.setText("Findings");
+		newPrescripsField = new TextField();
+		newPrescripsField.setText("New Prescriptions");
+		issuesField = new TextField();
+		prescriptionsField = new TextField();
+		immunizationField = new TextField();
+		oldFindingsField = new TextField();
+		oldPrescripsField = new TextField();
 				
 		//uibox
 		UIBox.setSpacing(20);
@@ -71,7 +81,7 @@ public class VisitNotes {
 		//visitBox
 		visitBox.setSpacing(5);
 		visitBox.getChildren().addAll(visitNotes, findingsField, newPrescripsField, patientHistory,
-				historyBox, pastVisits, pastBox);
+				historyBox, pastVisits, pastBox, saveBtn);
 				
 		mainPane.setLeft(UIBox);
 		mainPane.setCenter(visitBox);
