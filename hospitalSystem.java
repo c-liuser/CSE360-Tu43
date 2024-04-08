@@ -142,9 +142,11 @@ public class hospitalSystem extends Application {
         //to show intakeForm (temp)
         //IntakeForm intakeForm = new IntakeForm();
         //primaryStage.setScene(intakeForm.IntakeFormFunction(primaryStage));
+        //primaryStage.show();
         
         //to show visitnotes (temp)
         //VisitNotes visitNotes = new VisitNotes();
         //primaryStage.setScene(visitNotes.VisitNotesFunction(primaryStage));
+        //primaryStage.show();
     }
 }
