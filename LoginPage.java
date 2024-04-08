@@ -1,4 +1,12 @@
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Random;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -29,6 +37,7 @@ public class LoginPage {
   public TextField patientFnameTF;
   public TextField patientLnameTF;
   public TextField patientBirthdayTF;
+  public TextField patientNewPasswordTF;
   
   public Button patientSigninBT;
   public Button patientSignupBT;
@@ -36,6 +45,8 @@ public class LoginPage {
   private Separator sep;
   
   public HBox screen;
+  
+  private String loginDB = "./src/loginDB.txt";
   
   public LoginPage() {
  // Titles
@@ -60,7 +71,7 @@ public class LoginPage {
     vbox3.setPadding(new Insets(15));
 
     // Button
-    Button button1 = new Button("Sign-in");
+    Button docSigninBT = new Button("Sign-in");
     patientSigninBT = new Button("Sign-in");
     patientSignupBT = new Button("Sign-up");
 //    patientSigninBT.setMinWidth(40);
@@ -82,27 +93,24 @@ public class LoginPage {
     TextField testOutput = new TextField();
     testOutput.setPromptText("for testing only");
     
-    patientFnameTF= new TextField();
+    patientFnameTF = new TextField();
     patientFnameTF.setPromptText("First Name");
-    patientLnameTF= new TextField();
+    patientLnameTF = new TextField();
     patientLnameTF.setPromptText("Last Name");
-    patientBirthdayTF= new TextField();
+    patientBirthdayTF = new TextField();
     patientBirthdayTF.setPromptText("Birthday");
+    patientNewPasswordTF = new TextField();
+    patientNewPasswordTF.setPromptText("Password");
     
-    VBox patientSigninVB = new VBox(10);
-    patientSigninVB.setPrefWidth(200);
-    patientSigninVB.setPadding(new Insets(15));
-    patientSigninVB.getChildren().addAll(patientFnameTF, patientLnameTF, patientBirthdayTF, patientSignupBT);
-
     // Separator
     sep = new Separator();
     sep.setOrientation(Orientation.VERTICAL);
     sep.setHalignment(HPos.RIGHT);
 
     // add to vboxes
-    vbox1.getChildren().addAll(docLoginLB, docUsernameTF, docPasswordTF, button1);
+    vbox1.getChildren().addAll(docLoginLB, docUsernameTF, docPasswordTF, docSigninBT);
     vbox1.setStyle("-fx-border-color: black");
-    vbox3.getChildren().addAll(patientLoginLB, patientUsernameTF, patientPasswordTF, patientSigninBT);
+    vbox3.getChildren().addAll(patientLoginLB, patientUsernameTF, patientPasswordTF, patientSigninBT,patientFnameTF, patientLnameTF, patientBirthdayTF, patientNewPasswordTF, patientSignupBT, testOutput);
     vbox3.setStyle("-fx-border-color: black");
 
     // add to hbox
@@ -113,8 +121,36 @@ public class LoginPage {
     // implement button events
     patientSignupBT.setOnAction(new EventHandler<ActionEvent>() {
         public void handle(ActionEvent event) {
-            String username = patientUsernameTF.getText();
-            String password = patientPasswordTF.getText();
+          String fName = patientFnameTF.getText();
+          String lName = patientLnameTF.getText();
+          String bday = patientBirthdayTF.getText();
+          String newPassword = patientNewPasswordTF.getText();
+          String newUsername = "";
+          
+          Random rand = new Random();
+            
+          int rand_int1 = rand.nextInt(fName.length());
+          newUsername += fName.substring(0, rand_int1 + 1);
+            
+          rand_int1 = rand.nextInt(lName.length());
+          newUsername += lName.substring(0, rand_int1 + 1);
+
+          rand_int1 = rand.nextInt(bday.length());
+          newUsername += bday.substring(0, rand_int1 + 1);
+            
+          newUsername = newUsername.toLowerCase();
+          testOutput.setText(newUsername);
+          
+          try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(loginDB, true));
+            writer.append(newUsername + newPassword + '\n');
+            writer.close();
+            System.out.println("Successfully wrote to the file.");
+          } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+          }
+            
             //Patient newUser = new Patient(username, password);
 //            testPatients.add(newUser);
 //            if (testPatients.get(testPatients.size() - 1).getUser() == username
@@ -129,6 +165,24 @@ public class LoginPage {
         public void handle(ActionEvent event) {
             String username = patientUsernameTF.getText();
             String password = patientPasswordTF.getText();
+            
+            try {
+              FileReader fr = new FileReader(loginDB);
+              BufferedReader br = new BufferedReader(fr);
+              String check = "1";
+              while(check != null) {
+                if(check.equals(username + password)){
+                  br.close();
+                  System.out.println("signin successful");
+                  break;
+                }
+                check = br.readLine();
+              }
+              System.out.println("signin failed");
+            } catch (IOException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            } 
 //            for (int i = 0; i < testPatients.size(); i++) {
 //                if (username.equals(testPatients.get(i).getUser())) {
 //                    if (password.equals(testPatients.get(i).getPass())) {
@@ -141,9 +195,43 @@ public class LoginPage {
 //            }
         }
     });
+    
+    docSigninBT.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent event) {
+        String username = docUsernameTF.getText();
+        String password = docPasswordTF.getText();
+        
+        try {
+          FileReader fr = new FileReader(loginDB);
+          BufferedReader br = new BufferedReader(fr);
+          String check = "1";
+          while(check != null) {
+            if(check.equals(username + password)){
+              br.close();
+              System.out.println("signin successful");
+              break;
+            }
+            check = br.readLine();
+          }
+          System.out.println("signin failed");
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } 
+//        for (int i = 0; i < testPatients.size(); i++) {
+//            if (username.equals(testPatients.get(i).getUser())) {
+//                if (password.equals(testPatients.get(i).getPass())) {
+//                    testOutput.setText("Success");
+//                } else {
+//                    testOutput.setText("Wrong Password");
+//                }
+//            } else
+//                testOutput.setText("User not found!");
+//        }
+    }
+});
 
     // changes to vbox
-    vbox3.getChildren().add(patientSigninVB);
   }
 
 }
