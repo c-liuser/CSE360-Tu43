@@ -12,54 +12,63 @@ import javafx.scene.layout.BorderPane;
 
 public class IntakeForm {
 	
+	BorderPane mainPane;
+	VBox intakeBox, UIBox, historyBox, visitsBox;
+	Button homeBtn, msgBtn, saveBtn;
+	Label intakeFormLabel, intakeFormHistory, intakeFormPastVisits, intakeHealthIssuesLabel, intakePrescriptionsLabel, intakeImmunizationLabel, intakeFindings, intakeNewPrescriptions; 
+	CheckBox over12;
+	TextField intakeHeight, intakeWeight, intakeBodyTemp, intakeBloodPressure, intakeAllergies, intakeHealthConcerns, intakeHealthIssues, intakePrescriptions, intakeImmunizationHistory, intakePastVisitsFindings, intakePastVisitsPrescriptions;
+	
 	public Scene IntakeFormFunction(Stage primaryStage) {
 		
 		//panes
-		BorderPane mainPane = new BorderPane();
-		VBox intakeBox = new VBox();
-		VBox UIBox = new VBox();
-		VBox historyBox = new VBox();
-		VBox visitsBox = new VBox();
+		mainPane = new BorderPane();
+		intakeBox = new VBox();
+		UIBox = new VBox();
+		historyBox = new VBox();
+		visitsBox = new VBox();
 		
 		//buttons
-		Button homeBtn = new Button("home");
+		homeBtn = new Button("home");
 		homeBtn.setPrefSize(50, 50);
-		Button msgBtn = new Button("msg");
+		msgBtn = new Button("msg");
 		msgBtn.setPrefSize(50, 50);
+		saveBtn = new Button("save");
+		saveBtn.setPrefSize(100, 50);
 				
 		//labels
-		Label intakeFormLabel = new Label("Intake Form");
+		intakeFormLabel = new Label("Intake Form");
 		intakeFormLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-		Label intakeFormHistory = new Label("Patient History");
+		intakeFormHistory = new Label("Patient History");
 		intakeFormHistory.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-		Label intakeFormPastVisits = new Label("Past Visits");
+		intakeFormPastVisits = new Label("Past Visits");
 		intakeFormPastVisits.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-		Label intakeHealthIssuesLabel = new Label("Health Issues");
+		intakeHealthIssuesLabel = new Label("Health Issues");
 		intakeHealthIssuesLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		Label intakePrescriptionsLabel = new Label("Prescriptions");
+		intakePrescriptionsLabel = new Label("Prescriptions");
 		intakePrescriptionsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		Label intakeImmunizationLabel = new Label("Immunization History");
+		intakeImmunizationLabel = new Label("Immunization History");
 		intakeImmunizationLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		Label intakeFindings = new Label("Findings");
+		intakeFindings = new Label("Findings");
 		intakeFindings.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		Label intakeNewPrescriptions = new Label("New Prescriptions");
+		intakeNewPrescriptions = new Label("New Prescriptions");
 		intakeNewPrescriptions.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 				
 		//checkbox
-		CheckBox over12 = new CheckBox("Over 12");
+		over12 = new CheckBox("Over 12");
 				
 		//textfields
-		TextField intakeHeight = new TextField("Height");
-		TextField intakeWeight = new TextField("Weight");		
-		TextField intakeBodyTemp = new TextField("Body Temperature");
-		TextField intakeBloodPressure = new TextField("Blood Pressure");
-		TextField intakeAllergies = new TextField("Allergies");
-		TextField intakeHealthConcerns = new TextField("Health Concerns");
-		TextField intakeHealthIssues = new TextField();
-		TextField intakePrescriptions = new TextField();
-		TextField intakeImmunizationHistory = new TextField();
-		TextField intakePastVisitsFindings = new TextField();
-		TextField intakePastVisitsPrescriptions = new TextField();
+		intakeHeight = new TextField("Height");
+		intakeWeight = new TextField("Weight");		
+		intakeBodyTemp = new TextField("Body Temperature");
+		intakeBloodPressure = new TextField("Blood Pressure");
+		intakeAllergies = new TextField("Allergies");
+		intakeHealthConcerns = new TextField("Health Concerns");
+		intakeHealthIssues = new TextField();
+		intakePrescriptions = new TextField();
+		intakeImmunizationHistory = new TextField();
+		intakePastVisitsFindings = new TextField();
+		intakePastVisitsPrescriptions = new TextField();
 				
 		//uibox
 		UIBox.setSpacing(20);
@@ -81,7 +90,7 @@ public class IntakeForm {
 		intakeBox.setSpacing(5);
 		intakeBox.getChildren().addAll(intakeFormLabel, over12, intakeHeight,intakeWeight,intakeBodyTemp,
 				intakeBloodPressure, intakeAllergies, intakeHealthConcerns, intakeFormHistory, historyBox,
-				intakeFormPastVisits, visitsBox);
+				intakeFormPastVisits, visitsBox, saveBtn);
 				
 		//mainpane
 		mainPane.setLeft(UIBox); 
