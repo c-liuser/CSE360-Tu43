@@ -151,5 +151,15 @@ public class hospitalSystem extends Application {
         //VisitNotes visitNotes = new VisitNotes();
         //primaryStage.setScene(visitNotes.VisitNotesFunction(primaryStage));
         //primaryStage.show();
+
+        //show the patient message view
+        //messagesP pMessages = new messagesP();
+        //primaryStage.setScene(pMessages.messagesPFunction(primaryStage));
+        //primaryStage.show();
+        
+        //show the nurse/doctor view
+        //messagesND ndMessages = new messagesND();
+        //primaryStage.setScene(ndMessages.messagesNDFunction(primaryStage));
+        //primaryStage.show();
     }
 }
