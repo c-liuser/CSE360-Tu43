@@ -135,6 +135,7 @@ public class hospitalSystem extends Application {
 //
 //        // changes to vbox
 //        vbox3.getChildren().add(testOutput);
+        PatientPortal portal = new PatientPortal();
         LoginPage login = new LoginPage();
         Scene scene = new Scene(login.screen, 700, 500);
         login.scene = scene;

@@ -1,0 +1,44 @@
+Username:
+// input
+
+First Name:
+// input
+
+Last Name:
+// input
+
+Birthday:
+// input
+
+Phone Number:
+// input
+
+Weight:
+//input
+
+Body Temperature:
+//input
+
+Blood Pressure:
+//input
+
+History
+
+Health Issue:
+// input
+
+Precriptions:
+// input
+// input
+
+Immunization History:
+// input
+// input
+
+Past Visits
+
+Findings:
+// input
+
+New prescriptions:
+// input

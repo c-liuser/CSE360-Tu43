@@ -2,7 +2,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -60,6 +59,8 @@ public class LoginPage {
   public HBox screen;
   
   private String loginDB = "./src/loginDB.txt";
+  private String patientDB = "./src/patientDB/";
+  private String docDB = "./src/docDB/";
   public Scene scene;
   public Stage stage;
   
@@ -170,10 +171,34 @@ public class LoginPage {
             
           newUsername = newUsername.toLowerCase();
           patientComs.setText(newUsername);
-          
+          //write to logindb
           try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(loginDB, true));
             writer.append("p:" + newUsername +" "+ newPassword + '\n');
+            writer.close();
+            System.out.println("Successfully wrote to the file.");
+          } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+          }
+          //write to patientdb
+          try {
+            File myObj = new File(patientDB + newUsername+".txt");
+            myObj.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(patientDB + newUsername+".txt", true));
+            writer.append(newUsername + "\n" + fName + "\n" + lName + "\n" + bday + "\n");
+            writer.close();
+            System.out.println("Successfully wrote to the file.");
+          } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+          }
+          // write to docdb
+          try {
+            File myObj = new File(docDB + fName.toLowerCase() + lName.toLowerCase() +".txt");
+            myObj.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(docDB + fName.toLowerCase() + lName.toLowerCase() +".txt", true));
+            writer.append(newUsername + "\n" + fName + "\n" + lName + "\n" + bday + "\n");
             writer.close();
             System.out.println("Successfully wrote to the file.");
           } catch (IOException e) {
@@ -203,7 +228,7 @@ public class LoginPage {
               BufferedReader br = new BufferedReader(fr);
               String check = "1";
               while(check != null) {
-                if(check.equals("p:"+username +" "+ password)){
+                if(check.equals(prefix + username +" "+ password)){
                   br.close();
                   hasAccount = true;
                   System.out.println("signin successful");
@@ -218,20 +243,16 @@ public class LoginPage {
             } 
             if(hasAccount) {
               // navigate to doc page
-              patientComs.setText("signin successful");
+              //patientComs.setText("signin successful");
+              PatientPortal portal = new PatientPortal();
+              Window w = scene.getWindow();
+              if(w instanceof Stage) {
+                Stage s = (Stage) w;
+                s.setScene(portal.PatientPortalInit(new File(patientDB+username+".txt")));
+              }
             }else {
               patientComs.setText("Account does not exist");
             }
-//            for (int i = 0; i < testPatients.size(); i++) {
-//                if (username.equals(testPatients.get(i).getUser())) {
-//                    if (password.equals(testPatients.get(i).getPass())) {
-//                        testOutput.setText("Success");
-//                    } else {
-//                        testOutput.setText("Wrong Password");
-//                    }
-//                } else
-//                    testOutput.setText("User not found!");
-//            }
         }
     });
     
@@ -270,16 +291,22 @@ public class LoginPage {
         if(hasAccount) {
           // navigate to doc page
           if(docRB.isSelected()) {
+            VisitNotes visitNotes = new VisitNotes();
+            Window w = scene.getWindow();
+            if(w instanceof Stage) {
+              Stage s = (Stage) w;
+              s.setScene(visitNotes.VisitNotesFunction(stage));
+            }
+          }
+          
+          if(nurseRB.isSelected()) {
+            //navigate to nurse
             IntakeForm intake = new IntakeForm();
             Window w = scene.getWindow();
             if(w instanceof Stage) {
               Stage s = (Stage) w;
               s.setScene(intake.IntakeFormFunction(stage));
             }
-          }
-          
-          if(nurseRB.isSelected()) {
-            //navigate to nurse
           }
         }else {
           docComs.setText("Account does not exist");

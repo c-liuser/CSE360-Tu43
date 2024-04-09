@@ -1,3 +1,7 @@
 d:doc1 password1
 d:doc2 password2
+n:nurse1 password1
 p:arcined120493 test1
+p:testes12345678 test
+p:aedouard04 password1
+p:aredou041720 password1
