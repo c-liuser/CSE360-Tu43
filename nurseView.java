@@ -10,7 +10,7 @@ import javafx.scene.text.Font;
 import javafx.scene.layout.BorderPane;
 
 public class nurseView {
-    public static Scene createWelcomeNurseScene() {
+    public static Scene createScene() {
         // Root
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #ADD8E6;"); // Light blue background
