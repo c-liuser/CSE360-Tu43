@@ -1,7 +1,10 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class PatientPortal {
   public File patientFile;
@@ -25,6 +29,7 @@ public class PatientPortal {
   
   public HBox menu;
   public VBox mainScreen;
+  public VBox pastVisitSection;
   
   public HBox nameHbox;
   
@@ -41,8 +46,12 @@ public class PatientPortal {
   
   public Label welcomeLB;
   
+  public ArrayList<PastVisit> pastVisitsList;
+  
   
   public Scene PatientPortalInit(File patientFile) {
+    pastVisitsList = getPastVisits(patientFile);
+    
     welcomeLB = new Label("Welcome Patient");
     welcomeLB.setFont(Font.font("Arial", FontWeight.BOLD, 20));
     
@@ -84,10 +93,28 @@ public class PatientPortal {
     
     patientInfo.add(editBT, 1, 0);
     
+    //start of past section
+    pastVisitSection = new VBox(5);
+    
+    Label pastVisitLB = new Label("Past Visits");
+    pastVisitLB.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+    pastVisitSection.getChildren().add(pastVisitLB);
+    for(int i = 0; i < pastVisitsList.size(); i++) {
+      PastVisit temp = pastVisitsList.get(i);
+      pastVisitSection.getChildren().add(new Text("Findings:"));
+      pastVisitSection.getChildren().add(new Text(temp.findings));
+      pastVisitSection.getChildren().add(new Text("New prescriptions:"));
+      for(int j = 0; j < temp.prescriptions.size(); j++) {
+        pastVisitSection.getChildren().addAll(new Text(temp.prescriptions.get(j)));
+      }
+    }
+    
     mainScreen = new VBox(20);
-    mainScreen.getChildren().addAll(welcomeLB, patientInfo);
+    mainScreen.getChildren().addAll(welcomeLB, patientInfo, pastVisitSection);
     mainScreen.setAlignment(Pos.TOP_CENTER);
     patientInfo.setAlignment(Pos.TOP_CENTER);
+    //pastVisitSection.setAlignment(Pos.TOP_CENTER);
+    VBox.setMargin(pastVisitSection, new Insets(40));
     
     screen = new BorderPane();
     screen.setTop(menu);
@@ -111,6 +138,57 @@ public class PatientPortal {
     number.setEditable(false);
     patientInfo.getChildren().remove(submitBT);
     patientInfo.add(editBT, 1, 0);
+  }
+  
+  public ArrayList<PastVisit> getPastVisits(File f){
+    int amountOfPastVisits = 0;
+    PastVisit temp;
+    ArrayList<PastVisit> pastVisits = new ArrayList<PastVisit>();
+    try {
+      FileReader fr = new FileReader(f);
+      BufferedReader br = new BufferedReader(fr);
+      String check = "1";
+      //goes down to past visit in file
+      while(!check.equals("Past Visits")) {
+        check = br.readLine();
+      }
+//      //sets the reset point
+//      br.mark(100);
+//      //find how many past visits there are
+//      while(!check.equals("past visits done")) {
+//        check = br.readLine();
+//        if(check.equals("Findings:")) {
+//          amountOfPastVisits++;
+//        }
+//      }
+//      //goes back to reset point
+//      br.reset();
+      while(!check.equals("past visits done")) {
+        while(!check.equals("Findings:")) {
+          check = br.readLine();
+        }
+        pastVisits.add(new PastVisit());
+        temp = pastVisits.get(amountOfPastVisits);
+        temp.findings = br.readLine();
+        
+        while(!check.equals("New prescriptions:")) {
+          check = br.readLine();
+        }
+        while(!check.equals("")) {
+          check = br.readLine();
+          temp.prescriptions.add(check);
+        }
+        check = br.readLine();
+        amountOfPastVisits++;
+      }
+      br.close();
+      
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } 
+
+    return pastVisits;
   }
 
 }

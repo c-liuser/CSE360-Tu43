@@ -1,4 +1,49 @@
+Username:
 aredou041720
+
+First Name:
 Arvin
+
+Last Name:
 Edouard
+
+Birthday:
 04172003
+
+Phone Number:
+// input
+
+History
+
+Health Issue:
+// input
+
+Precriptions:
+// input
+// input
+
+Immunization History:
+// input
+// input
+
+Past Visits
+
+Findings:
+patient is very healthy
+
+New prescriptions:
+drug1
+drug1
+drug3
+drug4
+
+Findings:
+patient is very healthy
+
+New prescriptions:
+drug1
+drug1
+drug3
+drug4
+
+past visits done

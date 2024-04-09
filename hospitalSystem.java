@@ -5,6 +5,7 @@
  * Main coder: Daniel Chang
  */
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -135,12 +136,14 @@ public class hospitalSystem extends Application {
 //
 //        // changes to vbox
 //        vbox3.getChildren().add(testOutput);
+        File f = new File("./src/patientDB/aredou041720.txt");
         PatientPortal portal = new PatientPortal();
         LoginPage login = new LoginPage();
         Scene scene = new Scene(login.screen, 700, 500);
         login.scene = scene;
         login.stage = primaryStage;
-        primaryStage.setScene(scene);
+        //primaryStage.setScene(scene);
+        primaryStage.setScene(portal.PatientPortalInit(f));
         primaryStage.show();
 
         //to show intakeForm (temp)

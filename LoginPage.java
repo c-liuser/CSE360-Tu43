@@ -64,6 +64,11 @@ public class LoginPage {
   public Scene scene;
   public Stage stage;
   
+  public DatabaseManager db = new DatabaseManager();
+  private String docPrefix = "d:";
+  private String nursePrefix = "n:";
+  private String patientPrefix = "p:";
+  
   public LoginPage() {
  // Titles
     docLoginLB = new Label("Doctor/Nurse Portal");
@@ -172,48 +177,12 @@ public class LoginPage {
           newUsername = newUsername.toLowerCase();
           patientComs.setText(newUsername);
           //write to logindb
-          try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(loginDB, true));
-            writer.append("p:" + newUsername +" "+ newPassword + '\n');
-            writer.close();
-            System.out.println("Successfully wrote to the file.");
-          } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-          }
+          db.addUserToLogin(patientPrefix, newUsername, newPassword);
           //write to patientdb
-          try {
-            File myObj = new File(patientDB + newUsername+".txt");
-            myObj.createNewFile();
-            BufferedWriter writer = new BufferedWriter(new FileWriter(patientDB + newUsername+".txt", true));
-            writer.append(newUsername + "\n" + fName + "\n" + lName + "\n" + bday + "\n");
-            writer.close();
-            System.out.println("Successfully wrote to the file.");
-          } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-          }
+          db.createInPatientDB(newUsername, fName, lName, bday);
           // write to docdb
-          try {
-            File myObj = new File(docDB + fName.toLowerCase() + lName.toLowerCase() +".txt");
-            myObj.createNewFile();
-            BufferedWriter writer = new BufferedWriter(new FileWriter(docDB + fName.toLowerCase() + lName.toLowerCase() +".txt", true));
-            writer.append(newUsername + "\n" + fName + "\n" + lName + "\n" + bday + "\n");
-            writer.close();
-            System.out.println("Successfully wrote to the file.");
-          } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-          }
+          db.createInDocDB(newUsername, fName, lName, bday);
             
-            //Patient newUser = new Patient(username, password);
-//            testPatients.add(newUser);
-//            if (testPatients.get(testPatients.size() - 1).getUser() == username
-//                    && testPatients.get(testPatients.size() - 1).getPass() == password) {
-//                testOutput.setText("Sign-up successful!");
-//            } else {
-//                testOutput.setText("Sign-up Unsuccessful. Please try again!");
-//            }
         }
     });
     patientSigninBT.setOnAction(new EventHandler<ActionEvent>() {
