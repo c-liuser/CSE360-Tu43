@@ -46,11 +46,13 @@ public class PatientPortal {
   
   public Label welcomeLB;
   
+  public PastVisit pv;
   public ArrayList<PastVisit> pastVisitsList;
   
   
   public Scene PatientPortalInit(File patientFile) {
-    pastVisitsList = getPastVisits(patientFile);
+    pv = new PastVisit();
+    pastVisitsList = pv.getPastVisits(patientFile);
     
     welcomeLB = new Label("Welcome Patient");
     welcomeLB.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -138,57 +140,6 @@ public class PatientPortal {
     number.setEditable(false);
     patientInfo.getChildren().remove(submitBT);
     patientInfo.add(editBT, 1, 0);
-  }
-  
-  public ArrayList<PastVisit> getPastVisits(File f){
-    int amountOfPastVisits = 0;
-    PastVisit temp;
-    ArrayList<PastVisit> pastVisits = new ArrayList<PastVisit>();
-    try {
-      FileReader fr = new FileReader(f);
-      BufferedReader br = new BufferedReader(fr);
-      String check = "1";
-      //goes down to past visit in file
-      while(!check.equals("Past Visits")) {
-        check = br.readLine();
-      }
-//      //sets the reset point
-//      br.mark(100);
-//      //find how many past visits there are
-//      while(!check.equals("past visits done")) {
-//        check = br.readLine();
-//        if(check.equals("Findings:")) {
-//          amountOfPastVisits++;
-//        }
-//      }
-//      //goes back to reset point
-//      br.reset();
-      while(!check.equals("past visits done")) {
-        while(!check.equals("Findings:")) {
-          check = br.readLine();
-        }
-        pastVisits.add(new PastVisit());
-        temp = pastVisits.get(amountOfPastVisits);
-        temp.findings = br.readLine();
-        
-        while(!check.equals("New prescriptions:")) {
-          check = br.readLine();
-        }
-        while(!check.equals("")) {
-          check = br.readLine();
-          temp.prescriptions.add(check);
-        }
-        check = br.readLine();
-        amountOfPastVisits++;
-      }
-      br.close();
-      
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } 
-
-    return pastVisits;
   }
 
 }
