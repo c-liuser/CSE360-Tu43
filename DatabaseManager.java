@@ -1,4 +1,4 @@
-package application;
+
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -77,6 +77,30 @@ public class DatabaseManager {
       e.printStackTrace();
     }
     return patient;
+  }
+  
+  public void editPatientFile(Patient p) {
+    try {
+      ObjectOutputStream outputStream = new ObjectOutputStream(
+          new FileOutputStream(p.getDocDBFile()));
+      outputStream.writeObject(p);
+      System.out.println("Successfully wrote to the file.");
+      outputStream.close();
+    } catch (IOException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+    try {
+      ObjectOutputStream outputStream = new ObjectOutputStream(
+          new FileOutputStream(p.getPatientDBFile()));
+      outputStream.writeObject(p);
+      System.out.println("Successfully wrote to the file.");
+      outputStream.close();
+    } catch (IOException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+
   }
 
 }

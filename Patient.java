@@ -142,6 +142,14 @@ class Patient implements Serializable {
 		return patientDBFile;
 	}
 
+    public void setFirstName(String fName) {
+      this.fName = fName;
+    }
+
+    public void setLastName(String lName) {
+      this.lName = lName;
+    }
+
 	public void setPhone(String num) {
 	  phoneNum = num;
 	}

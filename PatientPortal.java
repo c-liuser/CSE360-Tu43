@@ -219,6 +219,10 @@ public class PatientPortal {
   }
   
   public void submitBTAction() {
+    patient.setFirstName(fNameTF.getText());
+    patient.setLastName(lNameTF.getText());
+    patient.setPhone(number.getText());
+    db.editPatientFile(patient);
     fNameTF.setEditable(false);
     lNameTF.setEditable(false);
     number.setEditable(false);
