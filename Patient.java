@@ -26,6 +26,8 @@ class Patient implements Serializable {
 	private ArrayList<String> medications;
 	private ArrayList<String> immunizations;
 	private ArrayList<String> messages;
+	private String docDBFile;
+	private String patientDBFile;
 
 	public Patient() {
 		fName = "test";
@@ -53,6 +55,8 @@ class Patient implements Serializable {
 		ArrayList<String> medications = new ArrayList<String>();
 		ArrayList<String> immunizations = new ArrayList<String>();
 		ArrayList<String> messages = new ArrayList<String>();
+		docDBFile = "./src/docDB/" + fNames.toLowerCase() + lNames.toLowerCase() + ".txt";
+		patientDBFile = "./src/patientDB/" + userNames + ".txt";
 	}
 
 	public String getFirstName() {
@@ -121,6 +125,14 @@ class Patient implements Serializable {
 
 	public ArrayList<String> getImmun() {
 		return immunizations;
+	}
+
+	public String getDocDBFile() {
+		return docDBFile;
+	}
+
+	public String getPatientDBFile() {
+		return patientDBFile;
 	}
 
 	public void setPhone(String num) {
