@@ -1,9 +1,7 @@
-<<<<<<< Updated upstream
+package application;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-=======
-package application;
->>>>>>> Stashed changes
 
 class Patient implements Serializable {
 	private static final long serialVersionUID = 1L;
