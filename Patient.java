@@ -21,6 +21,7 @@ class Patient implements Serializable {
 	private ArrayList<String> history;
 	private ArrayList<String> medications;
 	private ArrayList<String> immunizations;
+	private ArrayList<String> messages;
 
 	public Patient() {
 		fName = "test";
@@ -34,6 +35,7 @@ class Patient implements Serializable {
 		ArrayList<String> history = new ArrayList<String>();
 		ArrayList<String> medications = new ArrayList<String>();
 		ArrayList<String> immunizations = new ArrayList<String>();
+		ArrayList<String> messages = new ArrayList<String>();
 	}
 
 	public Patient(String fNames, String lNames, String userNames, String bdays) {
@@ -46,6 +48,7 @@ class Patient implements Serializable {
 		ArrayList<String> history = new ArrayList<String>();
 		ArrayList<String> medications = new ArrayList<String>();
 		ArrayList<String> immunizations = new ArrayList<String>();
+		ArrayList<String> messages = new ArrayList<String>();
 	}
 
 	public String getFirstName() {
@@ -161,6 +164,10 @@ class Patient implements Serializable {
 
 	public void addImmun(String immun) {
 		this.immunizations.add(immun);
+	}
+
+	public void addMsg(String msg) {
+		this.messages.add(msg);
 	}
 
 };
