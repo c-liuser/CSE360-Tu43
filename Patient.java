@@ -1,5 +1,4 @@
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -25,11 +24,10 @@ class Patient implements Serializable {
 	private ArrayList<String> immunizations;
 	private ArrayList<String> messages;
 
-	public ArrayList<PastVisit> pastVisits; 
+	public ArrayList<PastVisit> pastVisits;
 
 	private String docDBFile;
 	private String patientDBFile;
-
 
 	public Patient() {
 		fName = "test";
@@ -142,16 +140,20 @@ class Patient implements Serializable {
 		return patientDBFile;
 	}
 
-    public void setFirstName(String fName) {
-      this.fName = fName;
-    }
+	public ArrayList<String> getMessages() {
+		return messages;
+	}
 
-    public void setLastName(String lName) {
-      this.lName = lName;
-    }
+	public void setFirstName(String fName) {
+		this.fName = fName;
+	}
+
+	public void setLastName(String lName) {
+		this.lName = lName;
+	}
 
 	public void setPhone(String num) {
-	  phoneNum = num;
+		phoneNum = num;
 	}
 
 	public void setPharm(String pharmacy) {

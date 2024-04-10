@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,144 +22,116 @@ import javafx.stage.Stage;
 
 public class messagesP {
 
-	//contains all the elements
+	// contains all the elements
 	BorderPane pane;
-	//for the buttons on the left column
+	// for the buttons on the left column
 	VBox layoutBox, messagesArea;
-	///According to the UI layout, 3 buttons needed 
+	/// According to the UI layout, 3 buttons needed
 	Button patientHomeBtn, sendBtn, messagesBtn;
-	//According ot the UI layout, 1 messageField
+	// According ot the UI layout, 1 messageField
 	TextField pMessageField;
-	
-	public Scene messagesPFunction(Stage primaryStage) {
-	
-		
-		File myFile = new File("messages2.txt");
-		if (!myFile.exists()) {
-		    try {
-				myFile.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-    
-		//button display
-		sendBtn = new Button ("Send");
+	TextArea messagesP;
+	Patient patient;
+
+	public Scene messagesPFunction(Stage primaryStage, Patient p) {
+
+		patient = p;
+
+		// button display
+		sendBtn = new Button("Send");
 		sendBtn.setPrefSize(40, 10);
 		sendBtn.setAlignment(Pos.BOTTOM_RIGHT);
-		messagesBtn = new Button ("MSSGs");
+		messagesBtn = new Button("MSSGs");
 		messagesBtn.setPrefSize(40, 40);
-		patientHomeBtn = new Button ("Home");
+		patientHomeBtn = new Button("Home");
 		patientHomeBtn.setPrefSize(40, 40);
-		
-		//Align buttons vertically, to the left of the scene
+
+		// Align buttons vertically, to the left of the scene
 		layoutBox = new VBox();
 		layoutBox.getChildren().addAll(patientHomeBtn, messagesBtn);
 		layoutBox.setSpacing(20);
-		
-		
-		//message field display
+
+		// message field display
 		pMessageField = new TextField();
 		pMessageField.setPromptText("Write your message here");
 		pMessageField.setPrefWidth(580);
-        pMessageField.setAlignment(Pos.BASELINE_LEFT);
-        
-        
-     // Create an HBox to layout the TextField and Button horizontally
-        HBox hbox = new HBox();
-        //hbox.getChildren().addAll(pMessageField, sendBtn);
-        hbox.setAlignment(Pos.CENTER_RIGHT);
-        
-        //hbox.setSpacing(10); // Add some spacing between the TextField and Button
-		
-        
-        hbox.getChildren().addAll(pMessageField, sendBtn);
-        
-        TextArea messagesP = new TextArea();
-        messagesP.setPrefHeight(400);
-        messagesP.setPrefWidth(340);
-        messagesP.setEditable(false);
+		pMessageField.setAlignment(Pos.BASELINE_LEFT);
+
+		// Create an HBox to layout the TextField and Button horizontally
+		HBox hbox = new HBox();
+		// hbox.getChildren().addAll(pMessageField, sendBtn);
+		hbox.setAlignment(Pos.CENTER_RIGHT);
+
+		// hbox.setSpacing(10); // Add some spacing between the TextField and Button
+
+		hbox.getChildren().addAll(pMessageField, sendBtn);
+
+		messagesP = new TextArea();
+		messagesP.setPrefHeight(400);
+		messagesP.setPrefWidth(340);
+		messagesP.setEditable(false);
 		messagesArea = new VBox();
-		
+		displayPatientMessages();
+
 		// Align the text to the right
-        messagesP.setStyle("-fx-text-alignment: right;");
-		
+		// messagesP.setStyle("-fx-text-alignment: right;");
+
 		messagesArea.getChildren().add(messagesP);
-		
+
 		/////////////////////////////////////////////////////////////////////
-		////////////////Functionality
+		//////////////// Functionality
 
-		patientHomeBtn.setOnAction(e ->{
-			//change to patient home
+		patientHomeBtn.setOnAction(e -> {
+			// change to patient home
 			pane.getChildren().clear();
-			//redirect to the patient home view
+			// redirect to the patient home view
+			DatabaseManager db = new DatabaseManager();
+			db.editPatientFile(patient);
 		});
-		
-		messagesBtn.setOnAction(e ->{
-			//Load the messages page
-		});
-		
-		sendBtn.setOnAction(e ->{
-			//clear the text field, load the message on the message area
-			//send to doctor & nurse
-			
-			// Get the text from the message field
-		    String message = pMessageField.getText();
 
-		    // Add the message to the messages area
-		    messagesP.appendText("Me: " + message + "\n");
-		    
-		    // Clear the text field
-		    pMessageField.clear();
-		    
-		    //save the messages into a txt
-		 // Write the message to a text file
-		    try {
-		        FileWriter writer = new FileWriter(myFile, true);
-		        BufferedWriter bufferedWriter = new BufferedWriter(writer);
-		        bufferedWriter.write("Patient: " + message + "\n");
-		        bufferedWriter.close();
-		    } catch (IOException ex) {
-		        ex.printStackTrace();
-		    }
-		    
+		messagesBtn.setOnAction(e -> {
+			// Load the messages page
 		});
-		
-		// Load the messages from the text file
-	    try {
-	        FileReader reader = new FileReader(myFile);
-	        BufferedReader bufferedReader = new BufferedReader(reader);
-	        String line;
-	        while ((line = bufferedReader.readLine()) != null) {
-	            messagesP.appendText(line + "\n");
-	        }
-	        bufferedReader.close();
-	    } catch (IOException ex) {
-	        ex.printStackTrace();
-	    }
-		
+
+		sendBtn.setOnAction(e -> {
+			// clear the text field, load the message on the message area
+			// send to doctor & nurse
+
+			// Get the text from the message field
+			String message = pMessageField.getText();
+
+			// Add the message to the messages area
+			messagesP.appendText("Me: " + message + "\n");
+			patient.addMsg("Me: " + message + "\n");
+			// Clear the text field
+			pMessageField.clear();
+
+		});
 
 		//////////////////////////////////////////////////
-		
-     // Create a StackPane to overlay the TextField and Button
-        StackPane root = new StackPane();
-        root.getChildren().addAll(hbox);
-		//set the layoutBox, to the left of the border pane
-        pane = new BorderPane();
+
+		// Create a StackPane to overlay the TextField and Button
+		StackPane root = new StackPane();
+		root.getChildren().addAll(hbox);
+		// set the layoutBox, to the left of the border pane
+		pane = new BorderPane();
 		pane.setLeft(layoutBox);
 		pane.setBottom(root);
 		pane.setCenter(messagesP);
-        
+
 		BorderPane.setMargin(layoutBox, new Insets(10, 10, 10, 10));
 		BorderPane.setMargin(root, new Insets(10, 10, 10, 10));
 		BorderPane.setMargin(messagesP, new Insets(10, 10, 0, 10));
-		
-        Scene pMessageSection = new Scene(pane, 700, 500);
-        
-        
+
+		Scene pMessageSection = new Scene(pane, 700, 500);
+
 		return pMessageSection;
-		
-		
+
+	}
+
+	public void displayPatientMessages() {
+		for (String msg : patient.getMessages()) {
+			messagesP.appendText(msg);
+		}
 	}
 }
