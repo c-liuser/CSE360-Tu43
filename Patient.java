@@ -1,23 +1,27 @@
+import java.io.Serializable;
+import java.util.ArrayList;
 
-class Patient {
-	String fName;
-	String lName;
-	String userName;
-	String bday;
-	String password;
-	String phoneNum;
-	String pharmacy;
-	String insurance;
-	int weight;
-	int height;
-	int bodyTemp;
-	int bloodPressure;
-	String[] allergies;
-	String[] healthConcerns;
-	boolean over12;
-	String[] history;
-	String[] medications;
-	String[] immunizations;
+class Patient implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private String fName;
+	private String lName;
+	private String userName;
+	private String bday;
+	// private String password;
+	private String phoneNum;
+	private String pharmacy;
+	private String insurance;
+	private int weight;
+	private int height;
+	private int bodyTemp;
+	private int bloodPressure;
+	private ArrayList<String> allergies;
+	private ArrayList<String> healthConcerns;
+	private boolean over12;
+	private ArrayList<String> history;
+	private ArrayList<String> medications;
+	private ArrayList<String> immunizations;
+	private ArrayList<String> messages;
 
 	public Patient() {
 		fName = "test";
@@ -25,16 +29,26 @@ class Patient {
 
 	public Patient(String user, String pass) {
 		userName = user;
-		password = pass;
+		// password = pass;
+		ArrayList<String> allergies = new ArrayList<String>();
+		ArrayList<String> healthConcerns = new ArrayList<String>();
+		ArrayList<String> history = new ArrayList<String>();
+		ArrayList<String> medications = new ArrayList<String>();
+		ArrayList<String> immunizations = new ArrayList<String>();
+		ArrayList<String> messages = new ArrayList<String>();
 	}
 
-	public Patient(String fNames, String lNames, String userNames, String bdays, String passwords, String phoneNums) {
+	public Patient(String fNames, String lNames, String userNames, String bdays) {
 		fName = fNames;
 		lName = lNames;
 		userName = userNames;
 		bday = bdays;
-		password = passwords;
-		phoneNum = phoneNums;
+		ArrayList<String> allergies = new ArrayList<String>();
+		ArrayList<String> healthConcerns = new ArrayList<String>();
+		ArrayList<String> history = new ArrayList<String>();
+		ArrayList<String> medications = new ArrayList<String>();
+		ArrayList<String> immunizations = new ArrayList<String>();
+		ArrayList<String> messages = new ArrayList<String>();
 	}
 
 	public String getFirstName() {
@@ -53,9 +67,9 @@ class Patient {
 		return bday;
 	}
 
-	public String getPass() {
-		return password;
-	}
+	// public String getPass() {
+	// return password;
+	// }
 
 	public String getPhone() {
 		return phoneNum;
@@ -73,6 +87,10 @@ class Patient {
 		return weight;
 	}
 
+	public int getHeight() {
+		return height;
+	}
+
 	public int getTemp() {
 		return bodyTemp;
 	}
@@ -81,23 +99,23 @@ class Patient {
 		return bloodPressure;
 	}
 
-	public String[] getAllergies() {
+	public ArrayList<String> getAllergies() {
 		return allergies;
 	}
 
-	public String[] getConcerns() {
+	public ArrayList<String> getConcerns() {
 		return healthConcerns;
 	}
 
-	public String[] getHist() {
+	public ArrayList<String> getHist() {
 		return history;
 	}
 
-	public String[] getMeds() {
+	public ArrayList<String> getMeds() {
 		return medications;
 	}
 
-	public String[] getImmun() {
+	public ArrayList<String> getImmun() {
 		return immunizations;
 	}
 
@@ -105,36 +123,51 @@ class Patient {
 	}
 
 	public void setPharm(String pharmacy) {
+		this.pharmacy = pharmacy;
 	}
 
 	public void setInsurance(String insurance) {
+		this.insurance = insurance;
 	}
 
 	public void setWeight(int weight) {
+		this.weight = weight;
 	}
 
 	public void setHeight(int height) {
+		this.height = height;
 	}
 
 	public void setTemp(int temp) {
+		this.bodyTemp = temp;
 	}
 
 	public void setPressure(int pressure) {
+		this.bloodPressure = pressure;
 	}
 
-	public void setAllergies(String[] allergies) {
+	public void addAllergy(String allergy) {
+		this.allergies.add(allergy);
 	}
 
-	public void setConcerns(String[] concerns) {
+	public void addConcern(String concern) {
+		this.healthConcerns.add(concern);
 	}
 
 	public void addHist(String data) {
+		this.history.add(data);
 	}
 
 	public void addMeds(String medication) {
+		this.medications.add(medication);
 	}
 
 	public void addImmun(String immun) {
+		this.immunizations.add(immun);
+	}
+
+	public void addMsg(String msg) {
+		this.messages.add(msg);
 	}
 
 };
