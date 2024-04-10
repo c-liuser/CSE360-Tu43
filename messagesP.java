@@ -1,10 +1,13 @@
+package cse360;
 
+import java.util.List;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -17,7 +20,7 @@ public class messagesP {
 	//contains all the elements
 	BorderPane pane;
 	//for the buttons on the left column
-	VBox layoutBox;
+	VBox layoutBox, messagesArea;
 	///According to the UI layout, 3 buttons needed 
 	Button patientHomeBtn, sendBtn, messagesBtn;
 	//According ot the UI layout, 1 messageField
@@ -41,8 +44,9 @@ public class messagesP {
 		
 		
 		//message field display
-		pMessageField = new TextField("Write your message here");
-		pMessageField.setPrefWidth(500);
+		pMessageField = new TextField();
+		pMessageField.setPromptText("Write your message here");
+		pMessageField.setPrefWidth(580);
         pMessageField.setAlignment(Pos.BASELINE_LEFT);
         
      // Create an HBox to layout the TextField and Button horizontally
@@ -51,23 +55,56 @@ public class messagesP {
         hbox.setAlignment(Pos.CENTER_RIGHT);
         
         //hbox.setSpacing(10); // Add some spacing between the TextField and Button
-		// Create a StackPane to overlay the TextField and Button
-        StackPane root = new StackPane();
-        root.getChildren().addAll(hbox);
-        
-        hbox.getChildren().addAll(pMessageField, sendBtn);
-
 		
         
+        hbox.getChildren().addAll(pMessageField, sendBtn);
+        
+        TextArea messagesP = new TextArea();
+        messagesP.setPrefHeight(400);
+        messagesP.setPrefWidth(340);
+        messagesP.setEditable(false);
+		messagesArea = new VBox();
+		
+		messagesArea.getChildren().add(messagesP);
+		
+		/////////////////////////////////////////////////////////////////////
+		////////////////Functionality
+
+		patientHomeBtn.setOnAction(e ->{
+			//change to patient home
+		});
+		
+		messagesBtn.setOnAction(e ->{
+			//Load the messages page
+		});
+		
+		sendBtn.setOnAction(e ->{
+			//clear the text field, load the message on the message area
+			//send to doctor & nurse
+
+		});
+		
+
+		//////////////////////////////////////////////////
+		
+     // Create a StackPane to overlay the TextField and Button
+        StackPane root = new StackPane();
+        root.getChildren().addAll(hbox);
 		//set the layoutBox, to the left of the border pane
         pane = new BorderPane();
 		pane.setLeft(layoutBox);
 		pane.setBottom(root);
+		pane.setCenter(messagesP);
         
-		BorderPane.setMargin(layoutBox, new Insets(0, 10, 10, 0));
-		
+		BorderPane.setMargin(layoutBox, new Insets(10, 10, 10, 10));
+		BorderPane.setMargin(root, new Insets(10, 10, 10, 10));
+		BorderPane.setMargin(messagesP, new Insets(10, 10, 0, 10));
 		
         Scene pMessageSection = new Scene(pane, 700, 500);
+        
+        
 		return pMessageSection;
+		
+		
 	}
 }
