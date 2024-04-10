@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PastVisit {
+public class PastVisit implements Serializable {
+  private static final long serialVersionUID = 1L;
   public String findings;
   public ArrayList<String> prescriptions;
   

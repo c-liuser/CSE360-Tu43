@@ -222,6 +222,11 @@ public class PatientPortal {
     patient.setFirstName(fNameTF.getText());
     patient.setLastName(lNameTF.getText());
     patient.setPhone(number.getText());
+    PastVisit past = new PastVisit();
+    
+    past.findings = number.getText();
+    patient.pastVisits.add(past);
+    
     db.editPatientFile(patient);
     fNameTF.setEditable(false);
     lNameTF.setEditable(false);
