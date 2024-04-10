@@ -1,3 +1,5 @@
+package application;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -7,6 +9,7 @@ import java.io.FileWriter;
 import java.io.BufferedWriter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -231,5 +234,6 @@ public class VisitNotes {
 		}
 		return hist;
 	}	
+	
 	
 }
