@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,7 +7,6 @@ import java.io.FileWriter;
 import java.io.BufferedWriter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -31,15 +28,20 @@ public class VisitNotes {
 	TextField findingsField, newPrescripsField;
 	
 	public File patientFile;
+	public Patient patient;
 	
 	public ArrayList<PastVisit> pastVisitsList;
-	public History history;
+	//public History history;
+	public String history;
+	
+	private DatabaseManager db;
 	
 	public Scene VisitNotesFunction(Stage primaryStage, File patientFile) {
 				
-		pastVisitsList = getPastVisits(patientFile);
-		history = getHistory(patientFile);
-		
+		db = new DatabaseManager();
+		String path = ("./src/patientDB/" + patientFile.getName());
+		patient = db.readPatientFile(path);
+
 		//panes
 		mainPane = new BorderPane();
 		UIBox = new VBox();
@@ -76,25 +78,26 @@ public class VisitNotes {
 		//historybox
 		historyBox.setStyle("-fx-border-color: black");
 		historyBox.setSpacing(1);
-		
-		historyBox.getChildren().add(new Text("Health Issues:"));
-		for (int i = 0; i < history.healthIssues.size(); i++) {
-			historyBox.getChildren().addAll(new Text(history.healthIssues.get(i)));
-		}
-		historyBox.getChildren().add(new Text("Prescriptions:"));
-		for (int i = 0; i < history.prescrips.size(); i++) {
-			historyBox.getChildren().addAll(new Text(history.prescrips.get(i)));
-		}
-		historyBox.getChildren().add(new Text("Immunization History:"));
-		for (int i = 0; i < history.immunizations.size(); i++) {
-			historyBox.getChildren().addAll(new Text(history.immunizations.get(i)));
-		}
+		historyBox.getChildren().add(new Text(history));
+		    
+		historyBox.getChildren().add(new Text("History:"));
+		    for(int i = 0; i < patient.hist.healthIssues.size(); i++) {
+		        historyBox.getChildren().add(new Text(patient.hist.healthIssues.get(i)));
+		    }
+		    historyBox.getChildren().add(new Text("Prescriptions:"));
+		    for(int i = 0; i < patient.hist.prescrips.size(); i++) {
+		        historyBox.getChildren().add(new Text(patient.hist.prescrips.get(i)));
+		    }
+		    historyBox.getChildren().add(new Text("Immunization History:"));
+		    for(int i = 0; i < patient.hist.immunizations.size(); i++) {
+		        historyBox.getChildren().add(new Text(patient.hist.immunizations.get(i)));
+		    }
 				
 		//pastbox
 		pastBox.setStyle("-fx-border-color: black");
 		pastBox.setSpacing(1);
-		for(int i = 0; i < pastVisitsList.size(); i++) {
-		      PastVisit temp = pastVisitsList.get(i);
+		for(int i = 0; i < patient.pastVisits.size(); i++) {
+		      PastVisit temp = patient.pastVisits.get(i);
 		      pastBox.getChildren().add(new Text("Findings:"));
 		      pastBox.getChildren().add(new Text(temp.findings));
 		      pastBox.getChildren().add(new Text("New prescriptions:"));
@@ -106,7 +109,7 @@ public class VisitNotes {
 		//visitBox
 		visitBox.setSpacing(5);
 		visitBox.getChildren().addAll(visitNotes, findingsField, newPrescripsField, saveBtn, patientHistory,
-				historyBox, pastVisits, pastBox);
+				historyBox, pastVisits, pastBox);	    
 				
 		mainPane.setLeft(UIBox);
 		mainPane.setCenter(visitBox);
@@ -124,7 +127,7 @@ public class VisitNotes {
 		
 		msgBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				//take to messagesND
+				//take to messagesD
 				
 				
 			}
@@ -134,7 +137,14 @@ public class VisitNotes {
 		saveBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				//save
+				String findings = findingsField.getText();
+				String newPrescription = newPrescripsField.getText();
 				
+				PastVisit pv = new PastVisit();
+		        pv.changeFindings(findings);
+		        pv.addPrescription(newPrescription);
+				
+		        db.editPatientFile(patient);
 			}
 		});
 		
@@ -144,96 +154,85 @@ public class VisitNotes {
 		
 	}
 	
-	public ArrayList<PastVisit> getPastVisits(File f){
-	    int amountOfPastVisits = 0;
-	    PastVisit temp;
-	    ArrayList<PastVisit> pastVisits = new ArrayList<PastVisit>();
-	    try {
-	      FileReader fr = new FileReader(f);
-	      BufferedReader br = new BufferedReader(fr);
-	      String check = "1";
-	      //goes down to past visit in file
-	      while(!check.equals("Past Visits")) {
-	        check = br.readLine();
-	      }
-
-	      while(!check.equals("past visits done")) {
-	        while(!check.equals("Findings:")) {
-	          check = br.readLine();
-	        }
-	        pastVisits.add(new PastVisit());
-	        temp = pastVisits.get(amountOfPastVisits);
-	        temp.findings = br.readLine();
-	        
-	        while(!check.equals("New prescriptions:")) {
-	          check = br.readLine();
-	        }
-	        while(!check.equals("")) {
-	          check = br.readLine();
-	          temp.prescriptions.add(check);
-	        }
-	        check = br.readLine();
-	        amountOfPastVisits++;
-	      }
-	      br.close();
-	      
-	    } catch (IOException e) {
-	      // TODO Auto-generated catch block
-	      e.printStackTrace();
-	    } 
-
-	    return pastVisits;
-	  }
-	
-	public History getHistory(File f) {
-		History hist = new History();
+	public int numberOfLines(File f) {
+		int numLines = 0;
 		try {
 			FileReader fr = new FileReader(f);
-		    BufferedReader br = new BufferedReader(fr);
-		    String check = "1";
-		    //goes down to history in file
-		    while(!check.equals("History")) {
-		    	check = br.readLine();
-		    }
-		    
-		    while (!check.equals("Past Visits")) {
-		    	while (!check.equals("Health Issue:")) {
-		    		check = br.readLine();
-		    	}
-		    	hist.addIssues(br.readLine());
-		    	check = br.readLine();
-		    	
-		    	while (!check.equals("Precriptions:")) {
-		    		check = br.readLine();
-		    	}
-		    	
-		    	while (!check.equals("")) {
-		    		check = br.readLine();
-		    		hist.addPrescrip(check);
-		    	}
-		    	
-		    	while (!check.equals("Immunization History:")) {
-		    		check = br.readLine();
-		    	}
-		    	
-		    	check = br.readLine();
-		    	
-		    	while (!check.equals("")) {
-		    		check = br.readLine();
-		    		hist.addImmunizations(check);
-		    	}
-		    	
-		    	check = br.readLine();
-		 
-		    }
-		    br.close();
-		    
+			BufferedReader br = new BufferedReader(fr);
+			String check = "1";
+			
+			while(!check.equals("past visits done")) {
+				check = br.readLine();
+				numLines++;
+			}
+			
+			br.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-		     e.printStackTrace();
+			e.printStackTrace();
 		}
-		return hist;
-	}	
+		
+		return numLines;
+	}
 	
+	//works when u save it the first time but errors if you close the scene and try it again, but then works if u delete the text that was
+	//added the first time not sure why
+	public void savesNotes(File f, String findings, String newPrescription) {
+		try {
+			
+			File temp = new File("./src/patientDB/temp.txt");
+			String filename = f.getName();
+			
+			FileWriter fw1 = new FileWriter(temp);
+			BufferedWriter outfile1 = new BufferedWriter(fw1);
+			FileReader fr1 = new FileReader(f);
+			BufferedReader br1 = new BufferedReader(fr1);
+
+			String check = "1";
+			int numLines = numberOfLines(f);
+			
+			for (int i = 0; i < numLines-1; i++) {
+				check = br1.readLine();
+				outfile1.append(check + "\n");
+			}
+			
+			outfile1.append("Findings: " + "\n");
+			outfile1.append(findings + "\n" + "\n");
+			outfile1.append("New Prescriptions:" + "\n");
+			outfile1.append(newPrescription + "\n" + "\n");
+			outfile1.append("past visits done");
+			
+			br1.close();
+			outfile1.close();
+			
+			f.delete();
+			
+			File fNew = new File("./src/patientDB/" + filename);
+			
+			FileWriter fw2 = new FileWriter(fNew);
+			BufferedWriter outfile2 = new BufferedWriter(fw2);
+			FileReader fr2 = new FileReader(temp);
+			BufferedReader br2 = new BufferedReader(fr2);
+			
+			check = "1";
+			numLines = numberOfLines(temp);
+			
+			for (int i = 0; i < numLines-1; i++) {
+				check = br2.readLine();
+				outfile2.append(check + "\n");
+			}
+			check = br2.readLine();
+			outfile2.append(check);
+			
+			outfile2.close();
+			br2.close();
+			
+			temp.delete();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	
 	
 }
