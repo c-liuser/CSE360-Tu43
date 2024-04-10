@@ -264,7 +264,7 @@ public class LoginPage {
             Window w = scene.getWindow();
             if(w instanceof Stage) {
               Stage s = (Stage) w;
-              s.setScene(visitNotes.VisitNotesFunction(stage));
+              s.setScene(visitNotes.VisitNotesFunction(stage, (new File(patientDB+username+".txt"))));
             }
           }
           
@@ -274,7 +274,7 @@ public class LoginPage {
             Window w = scene.getWindow();
             if(w instanceof Stage) {
               Stage s = (Stage) w;
-              s.setScene(intake.IntakeFormFunction(stage));
+              s.setScene(intake.IntakeFormFunction(stage, (new File(patientDB+username+".txt"))));
             }
           }
         }else {
