@@ -1,5 +1,3 @@
-
-
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -38,15 +36,20 @@ public class IntakeForm {
 	public Stage stage;
 	
 	public File patientFile;
+	public Patient patient;
+
 	
 	public ArrayList<PastVisit> pastVisitsList;
 	public History history;
 	
+	private DatabaseManager db;
+
 	
 	public Scene IntakeFormFunction(Stage primaryStage, File patientFile) {
 		
-		pastVisitsList = getPastVisits(patientFile);
-		history = getHistory(patientFile);
+		db = new DatabaseManager();
+		String path = ("./src/patientDB/" + patientFile.getName());
+		patient = db.readPatientFile(path);
 		
 		//panes
 		mainPane = new BorderPane();
@@ -90,25 +93,26 @@ public class IntakeForm {
 		historyBox.setStyle("-fx-border-color: black");
 		historyBox.setSpacing(1);
 		
-		historyBox.getChildren().add(new Text("Health Issues:"));
-		for (int i = 0; i < history.healthIssues.size(); i++) {
-			historyBox.getChildren().addAll(new Text(history.healthIssues.get(i)));
-		}
-		historyBox.getChildren().add(new Text("Prescriptions:"));
-		for (int i = 0; i < history.prescrips.size(); i++) {
-			historyBox.getChildren().addAll(new Text(history.prescrips.get(i)));
-		}
-		historyBox.getChildren().add(new Text("Immunization History:"));
-		for (int i = 0; i < history.immunizations.size(); i++) {
-			historyBox.getChildren().addAll(new Text(history.immunizations.get(i)));
-		}
+		historyBox.getChildren().add(new Text("History:"));
+	    for(int i = 0; i < patient.hist.healthIssues.size(); i++) {
+	        historyBox.getChildren().add(new Text(patient.hist.healthIssues.get(i)));
+	    }
+	    historyBox.getChildren().add(new Text("Prescriptions:"));
+	    for(int i = 0; i < patient.hist.prescrips.size(); i++) {
+	        historyBox.getChildren().add(new Text(patient.hist.prescrips.get(i)));
+	    }
+	    historyBox.getChildren().add(new Text("Immunization History:"));
+	    for(int i = 0; i < patient.hist.immunizations.size(); i++) {
+	        historyBox.getChildren().add(new Text(patient.hist.immunizations.get(i)));
+	    }
+		
 				
 		//visitsbox
 		visitsBox.setStyle("-fx-border-color: black");
 		visitsBox.setSpacing(1);
 
-		for(int i = 0; i < pastVisitsList.size(); i++) {
-		      PastVisit temp = pastVisitsList.get(i);
+		for(int i = 0; i < patient.pastVisits.size(); i++) {
+		      PastVisit temp = patient.pastVisits.get(i);
 		      visitsBox.getChildren().add(new Text("Findings:"));
 		      visitsBox.getChildren().add(new Text(temp.findings));
 		      visitsBox.getChildren().add(new Text("New prescriptions:"));
