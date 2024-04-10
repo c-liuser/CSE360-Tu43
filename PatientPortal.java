@@ -49,10 +49,17 @@ public class PatientPortal {
   public PastVisit pv;
   public ArrayList<PastVisit> pastVisitsList;
   
+  public Patient patient;
   
-  public Scene PatientPortalInit(File patientFile) {
-    pv = new PastVisit();
-    pastVisitsList = pv.getPastVisits(patientFile);
+  private DatabaseManager db;
+  
+  
+  public Scene PatientPortalInit(String patientFile) {
+    db = new DatabaseManager();
+   // pv = new PastVisit();
+    //pastVisitsList = pv.getPastVisits(patientFile);
+    
+    patient = db.readPatientFile(patientFile);
     
     welcomeLB = new Label("Welcome Patient");
     welcomeLB.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -76,11 +83,11 @@ public class PatientPortal {
     menu.getChildren().addAll(homeBT, messagingBT);
     menu.setAlignment(Pos.TOP_CENTER);
     
-    fNameTF = new TextField("First");
+    fNameTF = new TextField(patient.getFirstName());
     fNameTF.setEditable(false);
-    lNameTF = new TextField("Last");
+    lNameTF = new TextField(patient.getLastName());
     lNameTF.setEditable(false);
-    number = new TextField("Number");
+    number = new TextField(patient.getPhone());
     number.setEditable(false);
     
     nameHbox = new HBox();
@@ -101,8 +108,8 @@ public class PatientPortal {
     Label pastVisitLB = new Label("Past Visits");
     pastVisitLB.setFont(Font.font("Arial", FontWeight.BOLD, 20));
     pastVisitSection.getChildren().add(pastVisitLB);
-    for(int i = 0; i < pastVisitsList.size(); i++) {
-      PastVisit temp = pastVisitsList.get(i);
+    for(int i = 0; i < patient.pastVisits.size(); i++) {
+      PastVisit temp = patient.pastVisits.get(i);
       pastVisitSection.getChildren().add(new Text("Findings:"));
       pastVisitSection.getChildren().add(new Text(temp.findings));
       pastVisitSection.getChildren().add(new Text("New prescriptions:"));

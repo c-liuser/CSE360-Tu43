@@ -1,8 +1,11 @@
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class DatabaseManager {
@@ -51,6 +54,27 @@ public class DatabaseManager {
       System.out.println("An error occurred.");
       e.printStackTrace();
     }
+  }
+  
+  public Patient readPatientFile(String filePath) {
+    Patient patient = null;
+    try {
+      ObjectInputStream oit = new ObjectInputStream(new FileInputStream(filePath));
+      try {
+        patient = (Patient) oit.readObject();
+        System.out.println("Read Patient");
+      } catch (ClassNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return patient;
   }
 
 }

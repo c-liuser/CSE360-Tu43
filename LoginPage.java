@@ -217,7 +217,7 @@ public class LoginPage {
               Window w = scene.getWindow();
               if(w instanceof Stage) {
                 Stage s = (Stage) w;
-                s.setScene(portal.PatientPortalInit(new File(patientDB+username+".txt")));
+                s.setScene(portal.PatientPortalInit(patientDB+username+".txt"));
               }
             }else {
               patientComs.setText("Account does not exist");
