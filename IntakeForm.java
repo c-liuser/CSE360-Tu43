@@ -2,24 +2,49 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.stage.Window;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter; 
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class IntakeForm {
 	
 	BorderPane mainPane;
 	VBox intakeBox, UIBox, historyBox, visitsBox;
+	//HBox visitsBox;
 	Button homeBtn, msgBtn, saveBtn;
-	Label intakeFormLabel, intakeFormHistory, intakeFormPastVisits, intakeHealthIssuesLabel, intakePrescriptionsLabel, intakeImmunizationLabel, intakeFindings, intakeNewPrescriptions; 
+	Label intakeFormLabel, intakeFormHistory, intakeFormPastVisits; 
 	CheckBox over12;
-	TextField intakeHeight, intakeWeight, intakeBodyTemp, intakeBloodPressure, intakeAllergies, intakeHealthConcerns, intakeHealthIssues, intakePrescriptions, intakeImmunizationHistory, intakePastVisitsFindings, intakePastVisitsPrescriptions;
+	TextField intakeHeight, intakeWeight, intakeBodyTemp, intakeBloodPressure, intakeAllergies, intakeHealthConcerns;
 	
-	public Scene IntakeFormFunction(Stage primaryStage) {
+	public Scene scene;
+	public Stage stage;
+	
+	public File patientFile;
+	
+	public ArrayList<PastVisit> pastVisitsList;
+	public History history;
+	
+	
+	public Scene IntakeFormFunction(Stage primaryStage, File patientFile) {
+		
+		pastVisitsList = getPastVisits(patientFile);
+		history = getHistory(patientFile);
 		
 		//panes
 		mainPane = new BorderPane();
@@ -34,7 +59,7 @@ public class IntakeForm {
 		msgBtn = new Button("msg");
 		msgBtn.setPrefSize(50, 50);
 		saveBtn = new Button("save");
-		saveBtn.setPrefSize(100, 50);
+		saveBtn.setPrefSize(80, 40);
 				
 		//labels
 		intakeFormLabel = new Label("Intake Form");
@@ -43,17 +68,7 @@ public class IntakeForm {
 		intakeFormHistory.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 		intakeFormPastVisits = new Label("Past Visits");
 		intakeFormPastVisits.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-		intakeHealthIssuesLabel = new Label("Health Issues");
-		intakeHealthIssuesLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		intakePrescriptionsLabel = new Label("Prescriptions");
-		intakePrescriptionsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		intakeImmunizationLabel = new Label("Immunization History");
-		intakeImmunizationLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		intakeFindings = new Label("Findings");
-		intakeFindings.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		intakeNewPrescriptions = new Label("New Prescriptions");
-		intakeNewPrescriptions.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-				
+		
 		//checkbox
 		over12 = new CheckBox("Over 12");
 				
@@ -64,11 +79,6 @@ public class IntakeForm {
 		intakeBloodPressure = new TextField("Blood Pressure");
 		intakeAllergies = new TextField("Allergies");
 		intakeHealthConcerns = new TextField("Health Concerns");
-		intakeHealthIssues = new TextField();
-		intakePrescriptions = new TextField();
-		intakeImmunizationHistory = new TextField();
-		intakePastVisitsFindings = new TextField();
-		intakePastVisitsPrescriptions = new TextField();
 				
 		//uibox
 		UIBox.setSpacing(20);
@@ -76,21 +86,40 @@ public class IntakeForm {
 				
 		//historybox
 		historyBox.setStyle("-fx-border-color: black");
-		historyBox.setSpacing(5);
-		historyBox.getChildren().addAll(intakeHealthIssuesLabel, intakeHealthIssues, intakePrescriptionsLabel,
-				intakePrescriptions, intakeImmunizationLabel, intakeImmunizationHistory);
+		historyBox.setSpacing(1);
+		
+		historyBox.getChildren().add(new Text("Health Issues:"));
+		for (int i = 0; i < history.healthIssues.size(); i++) {
+			historyBox.getChildren().addAll(new Text(history.healthIssues.get(i)));
+		}
+		historyBox.getChildren().add(new Text("Prescriptions:"));
+		for (int i = 0; i < history.prescrips.size(); i++) {
+			historyBox.getChildren().addAll(new Text(history.prescrips.get(i)));
+		}
+		historyBox.getChildren().add(new Text("Immunization History:"));
+		for (int i = 0; i < history.immunizations.size(); i++) {
+			historyBox.getChildren().addAll(new Text(history.immunizations.get(i)));
+		}
 				
 		//visitsbox
 		visitsBox.setStyle("-fx-border-color: black");
-		visitsBox.setSpacing(5);
-		visitsBox.getChildren().addAll(intakeFindings, intakePastVisitsFindings, intakeNewPrescriptions, 
-						intakePastVisitsPrescriptions);
+		visitsBox.setSpacing(1);
+
+		for(int i = 0; i < pastVisitsList.size(); i++) {
+		      PastVisit temp = pastVisitsList.get(i);
+		      visitsBox.getChildren().add(new Text("Findings:"));
+		      visitsBox.getChildren().add(new Text(temp.findings));
+		      visitsBox.getChildren().add(new Text("New prescriptions:"));
+		      for(int j = 0; j < temp.prescriptions.size(); j++) {
+		        visitsBox.getChildren().addAll(new Text(temp.prescriptions.get(j)));
+		      }
+		    }
 				
 		//intakebox
 		intakeBox.setSpacing(5);
 		intakeBox.getChildren().addAll(intakeFormLabel, over12, intakeHeight,intakeWeight,intakeBodyTemp,
-				intakeBloodPressure, intakeAllergies, intakeHealthConcerns, intakeFormHistory, historyBox,
-				intakeFormPastVisits, visitsBox, saveBtn);
+				intakeBloodPressure, intakeAllergies, intakeHealthConcerns, saveBtn, intakeFormHistory, historyBox,
+				intakeFormPastVisits, visitsBox);
 				
 		//mainpane
 		mainPane.setLeft(UIBox); 
@@ -99,7 +128,117 @@ public class IntakeForm {
 		BorderPane.setMargin(UIBox, new Insets(0, 10, 0, 0));
 		BorderPane.setMargin(intakeBox, new Insets(0, 10, 10, 0));
 		
+		homeBtn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				//take to nurse view
+				
+				
+			}
+		});
+		
+		msgBtn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				//take to messagesND
+				
+				
+			}
+		});
+		
 		Scene intakeFormScene = new Scene(mainPane, 800, 600);
 		return intakeFormScene;
 	}
+	
+	public ArrayList<PastVisit> getPastVisits(File f){
+	    int amountOfPastVisits = 0;
+	    PastVisit temp;
+	    ArrayList<PastVisit> pastVisits = new ArrayList<PastVisit>();
+	    try {
+	      FileReader fr = new FileReader(f);
+	      BufferedReader br = new BufferedReader(fr);
+	      String check = "1";
+	      //goes down to past visit in file
+	      while(!check.equals("Past Visits")) {
+	        check = br.readLine();
+	      }
+
+	      while(!check.equals("past visits done")) {
+	        while(!check.equals("Findings:")) {
+	          check = br.readLine();
+	        }
+	        pastVisits.add(new PastVisit());
+	        temp = pastVisits.get(amountOfPastVisits);
+	        temp.findings = br.readLine();
+	        
+	        while(!check.equals("New prescriptions:")) {
+	          check = br.readLine();
+	        }
+	        while(!check.equals("")) {
+	          check = br.readLine();
+	          temp.prescriptions.add(check);
+	        }
+	        check = br.readLine();
+	        amountOfPastVisits++;
+	      }
+	      br.close();
+	      
+	    } catch (IOException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	    } 
+
+	    return pastVisits;
+	  }
+	
+	public History getHistory(File f) {
+		History hist = new History();
+		try {
+			FileReader fr = new FileReader(f);
+		    BufferedReader br = new BufferedReader(fr);
+		    String check = "1";
+		    //goes down to history in file
+		    while(!check.equals("History")) {
+		    	check = br.readLine();
+		    }
+		    
+		    while (!check.equals("Past Visits")) {
+		    	while (!check.equals("Health Issue:")) {
+		    		check = br.readLine();
+		    	}
+		    	hist.addIssues(br.readLine());
+		    	check = br.readLine();
+		    	
+		    	while (!check.equals("Precriptions:")) {
+		    		check = br.readLine();
+		    	}
+		    	
+		    	while (!check.equals("")) {
+		    		check = br.readLine();
+		    		hist.addPrescrip(check);
+		    	}
+		    	
+		    	while (!check.equals("Immunization History:")) {
+		    		check = br.readLine();
+		    	}
+		    	
+		    	check = br.readLine();
+		    	
+		    	while (!check.equals("")) {
+		    		check = br.readLine();
+		    		hist.addImmunizations(check);
+		    	}
+		    	
+		    	check = br.readLine();
+		 
+		    }
+		    br.close();
+		    
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+		     e.printStackTrace();
+		}
+		
+		return hist;
+	}	
+	
+	
 }
