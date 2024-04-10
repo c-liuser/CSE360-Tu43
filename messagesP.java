@@ -1,5 +1,11 @@
 package cse360;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 import javafx.geometry.Insets;
@@ -28,6 +34,17 @@ public class messagesP {
 	
 	public Scene messagesPFunction(Stage primaryStage) {
 	
+		
+		File myFile = new File("messages2.txt");
+		if (!myFile.exists()) {
+		    try {
+				myFile.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+    
 		//button display
 		sendBtn = new Button ("Send");
 		sendBtn.setPrefSize(40, 10);
@@ -92,12 +109,36 @@ public class messagesP {
 		    String message = pMessageField.getText();
 
 		    // Add the message to the messages area
-		    messagesP.appendText("Me: " + message + "\n\n");
-
+		    messagesP.appendText("Me: " + message + "\n");
+		    
 		    // Clear the text field
 		    pMessageField.clear();
 		    
+		    //save the messages into a txt
+		 // Write the message to a text file
+		    try {
+		        FileWriter writer = new FileWriter(myFile, true);
+		        BufferedWriter bufferedWriter = new BufferedWriter(writer);
+		        bufferedWriter.write("Patient: " + message + "\n");
+		        bufferedWriter.close();
+		    } catch (IOException ex) {
+		        ex.printStackTrace();
+		    }
+		    
 		});
+		
+		// Load the messages from the text file
+	    try {
+	        FileReader reader = new FileReader(myFile);
+	        BufferedReader bufferedReader = new BufferedReader(reader);
+	        String line;
+	        while ((line = bufferedReader.readLine()) != null) {
+	            messagesP.appendText(line + "\n");
+	        }
+	        bufferedReader.close();
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
 		
 
 		//////////////////////////////////////////////////
