@@ -49,6 +49,7 @@ public class messagesP {
 		pMessageField.setPrefWidth(580);
         pMessageField.setAlignment(Pos.BASELINE_LEFT);
         
+        
      // Create an HBox to layout the TextField and Button horizontally
         HBox hbox = new HBox();
         //hbox.getChildren().addAll(pMessageField, sendBtn);
@@ -65,6 +66,9 @@ public class messagesP {
         messagesP.setEditable(false);
 		messagesArea = new VBox();
 		
+		// Align the text to the right
+        messagesP.setStyle("-fx-text-alignment: right;");
+		
 		messagesArea.getChildren().add(messagesP);
 		
 		/////////////////////////////////////////////////////////////////////
@@ -72,6 +76,8 @@ public class messagesP {
 
 		patientHomeBtn.setOnAction(e ->{
 			//change to patient home
+			pane.getChildren().clear();
+			//redirect to the patient home view
 		});
 		
 		messagesBtn.setOnAction(e ->{
@@ -81,7 +87,16 @@ public class messagesP {
 		sendBtn.setOnAction(e ->{
 			//clear the text field, load the message on the message area
 			//send to doctor & nurse
+			
+			// Get the text from the message field
+		    String message = pMessageField.getText();
 
+		    // Add the message to the messages area
+		    messagesP.appendText("Me: " + message + "\n\n");
+
+		    // Clear the text field
+		    pMessageField.clear();
+		    
 		});
 		
 
