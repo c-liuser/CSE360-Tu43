@@ -1,3 +1,5 @@
+package application;
+
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -58,9 +60,9 @@ public class LoginPage {
   
   public HBox screen;
   
-  private String loginDB = "./src/loginDB.txt";
-  private String patientDB = "./src/patientDB/";
-  private String docDB = "./src/docDB/";
+  private String loginDB = "" + System.getProperty("user.dir") + "/src/application/loginDB.txt";
+  private String patientDB = "" + System.getProperty("user.dir") + "/src/patientDB/";
+  private String docDB = "" + System.getProperty("user.dir") + "/src/docDB/";
   public Scene scene;
   public Stage stage;
   
@@ -213,11 +215,11 @@ public class LoginPage {
             if(hasAccount) {
               // navigate to doc page
               //patientComs.setText("signin successful");
-              PatientPortal portal = new PatientPortal();
+              PatientPortal portal = new PatientPortal(new File(patientDB+username+".txt"));
               Window w = scene.getWindow();
               if(w instanceof Stage) {
                 Stage s = (Stage) w;
-                s.setScene(portal.PatientPortalInit(new File(patientDB+username+".txt")));
+                s.setScene(portal.getScene());
               }
             }else {
               patientComs.setText("Account does not exist");
@@ -260,21 +262,21 @@ public class LoginPage {
         if(hasAccount) {
           // navigate to doc page
           if(docRB.isSelected()) {
-            VisitNotes visitNotes = new VisitNotes();
+            doctorView dview = new doctorView();
             Window w = scene.getWindow();
             if(w instanceof Stage) {
               Stage s = (Stage) w;
-              s.setScene(visitNotes.VisitNotesFunction(stage, (new File(patientDB+username+".txt"))));
+              s.setScene(dview.getScene());
             }
           }
           
           if(nurseRB.isSelected()) {
             //navigate to nurse
-            IntakeForm intake = new IntakeForm();
+            nurseView nview = new nurseView();
             Window w = scene.getWindow();
             if(w instanceof Stage) {
               Stage s = (Stage) w;
-              s.setScene(intake.IntakeFormFunction(stage, (new File(patientDB+username+".txt"))));
+              s.setScene(nview.getScene());
             }
           }
         }else {
@@ -291,10 +293,15 @@ public class LoginPage {
 //            } else
 //                testOutput.setText("User not found!");
 //        }
-    }
-});
-
+      }
+    });	
+    
+    scene = new Scene(screen, 750, 500);
     // changes to vbox
+  }
+  
+  public Scene getScene() {
+	  return scene;
   }
 
 }

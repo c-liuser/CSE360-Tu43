@@ -1,3 +1,5 @@
+package application;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,9 +12,10 @@ import javafx.scene.text.Font;
 import javafx.scene.layout.BorderPane;
 
 public class nurseView {
-    public static Scene createScene() {
-        // Root
-        BorderPane root = new BorderPane();
+	Scene scene;
+	
+	public nurseView() {
+		BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #ADD8E6;"); // Light blue background
 
         // Side panel
@@ -51,8 +54,11 @@ public class nurseView {
         // sidebar on left main on right
         root.setLeft(sidebar);
         root.setCenter(main);
-
-        Scene scene = new Scene(root, 750, 500);
+        
+		scene = new Scene(root, 750, 500);
+	}
+	
+    public Scene getScene() {
         return scene;
     }
 }
