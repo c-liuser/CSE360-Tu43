@@ -25,7 +25,8 @@ class Patient implements Serializable {
 	private ArrayList<String> messages;
 
 	public ArrayList<PastVisit> pastVisits;
-
+	public History hist;
+	
 	private String docDBFile;
 	private String patientDBFile;
 
@@ -43,6 +44,7 @@ class Patient implements Serializable {
 		ArrayList<String> immunizations = new ArrayList<String>();
 		ArrayList<String> messages = new ArrayList<String>();
 		pastVisits = new ArrayList<PastVisit>();
+		hist = new History();
 	}
 
 	public Patient(String fNames, String lNames, String userNames, String bdays) {
@@ -58,7 +60,8 @@ class Patient implements Serializable {
 		ArrayList<String> messages = new ArrayList<String>();
 
 		pastVisits = new ArrayList<PastVisit>();
-
+		hist = new History();
+			
 		docDBFile = "./src/docDB/" + fNames.toLowerCase() + lNames.toLowerCase() + ".txt";
 		patientDBFile = "./src/patientDB/" + userNames + ".txt";
 
