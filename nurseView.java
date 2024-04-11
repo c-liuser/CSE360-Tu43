@@ -50,11 +50,13 @@ public class nurseView {
         Button msgBtn = new Button("msg");
         msgBtn.setPrefSize(50, 50);
 
+        Button intakeBtn = new Button("intake");
+        intakeBtn.setPrefSize(50, 50);
         // Main section
         VBox main = new VBox();
         main.setSpacing(10);
         main.setPadding(new Insets(20));
-        sidebar.getChildren().addAll(homeBtn, msgBtn);
+        sidebar.getChildren().addAll(homeBtn, msgBtn, intakeBtn);
 
         Label titleLabel = new Label("Welcome Nurse");
         titleLabel.setFont(new Font("Arial", 24));
@@ -74,8 +76,10 @@ public class nurseView {
 
         // Search button clicked
         searchButton.setOnAction(e -> searchUser(searchField.getText()));
+        // Msg button
         msgBtn.setOnAction(e -> openMessages());
-
+        // Intake button
+        intakeBtn.setOnAction(e -> openIntake());
         // Item in list listener
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, fileName) -> {
             if (fileName != null) {
@@ -148,6 +152,18 @@ public class nurseView {
             Scene messagesScene = nurseMsgs.messagesNFunction(patient);
             Stage stage = (Stage) scene.getWindow();
             stage.setScene(messagesScene);
+            stage.show();
+        } else {
+            fileContent.setText("Please search and select a patient!");
+        }
+    }
+
+    private void openIntake() {
+        if (patient != null) {
+            IntakeForm iForm = new IntakeForm();
+            Scene formScene = iForm.IntakeFormFunction(patient);
+            Stage stage = (Stage) scene.getWindow();
+            stage.setScene(formScene);
             stage.show();
         } else {
             fileContent.setText("Please search and select a patient!");

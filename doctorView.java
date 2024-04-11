@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,11 +53,14 @@ public class doctorView {
         Button msgBtn = new Button("msg");
         msgBtn.setPrefSize(50, 50);
 
+        Button visitBtn = new Button("visit");
+        visitBtn.setPrefSize(50, 50);
+
         // Main section
         VBox main = new VBox();
         main.setSpacing(10);
         main.setPadding(new Insets(20));
-        sidebar.getChildren().addAll(homeBtn, msgBtn);
+        sidebar.getChildren().addAll(homeBtn, msgBtn, visitBtn);
 
         Label titleLabel = new Label("Welcome Doctor");
         titleLabel.setFont(new Font("Arial", 24));
@@ -76,7 +80,10 @@ public class doctorView {
 
         // Search button clicked
         searchButton.setOnAction(e -> searchUser(searchField.getText()));
+        // Msg button
         msgBtn.setOnAction(e -> openMessages());
+        // Visit button
+        visitBtn.setOnAction(e -> openVisit());
 
         // Item in list listener
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, fileName) -> {
@@ -151,6 +158,18 @@ public class doctorView {
             Scene messagesScene = docMsgs.messagesNDFunction(patient);
             Stage stage = (Stage) scene.getWindow();
             stage.setScene(messagesScene);
+            stage.show();
+        } else {
+            fileContent.setText("Please search and select a patient!");
+        }
+    }
+
+    private void openVisit() {
+        if (patient != null) {
+            VisitNotes notes = new VisitNotes();
+            Scene notesScene = notes.VisitNotesFunction(patient);
+            Stage stage = (Stage) scene.getWindow();
+            stage.setScene(notesScene);
             stage.show();
         } else {
             fileContent.setText("Please search and select a patient!");

@@ -46,6 +46,8 @@ class Patient implements Serializable {
 		lName = lNames;
 		userName = userNames;
 		bday = bdays;
+		height = 0;
+		weight = 0;
 		this.allergies = new ArrayList<String>();
 		this.healthConcerns = new ArrayList<String>();
 		this.messages = new ArrayList<String>();
@@ -175,6 +177,7 @@ class Patient implements Serializable {
 
 	@Override
 	public String toString() {
-		return fName + " " + lName + " " + ((phoneNum != null) ? phoneNum : "");
+		return fName + " " + lName + " " + ((phoneNum != null) ? phoneNum : "") + "\nHeight: " + height + "\nWeight:"
+				+ weight;
 	}
 };

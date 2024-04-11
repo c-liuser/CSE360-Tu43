@@ -1,4 +1,3 @@
-package application;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -46,27 +45,27 @@ public class messagesP {
 		sendBtn = new Button("Send");
 		sendBtn.setPrefSize(40, 10);
 		sendBtn.setAlignment(Pos.BOTTOM_RIGHT);
-		//back button
+		// back button
 		backBtn = new Button("BACK");
-		backBtn.setPrefSize(40, 40);
+		backBtn.setPrefSize(50, 50);
 		backBtn.setOnAction(new EventHandler<>() {
 			public void handle(ActionEvent event) {
 				PatientPortal pportal = new PatientPortal(patient.getPatientDBFile());
 				Window w = scene.getWindow();
-				if(w instanceof Stage) {
+				if (w instanceof Stage) {
 					Stage s = (Stage) w;
 					s.setScene(pportal.getScene());
 				}
 			}
 		});
-		//home button
-		patientHomeBtn = new Button("Home");
-		patientHomeBtn.setPrefSize(40, 40);
+		// home button
+		patientHomeBtn = new Button("Log out");
+		patientHomeBtn.setPrefSize(50, 50);
 		patientHomeBtn.setOnAction(new EventHandler<>() {
 			public void handle(ActionEvent event) {
 				LoginPage home = new LoginPage();
 				Window w = scene.getWindow();
-				if(w instanceof Stage) {
+				if (w instanceof Stage) {
 					Stage s = (Stage) w;
 					s.setScene(home.getScene());
 				}

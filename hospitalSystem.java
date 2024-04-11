@@ -4,7 +4,6 @@
  * Team members: Daniel Chang, Cole Liu, Josh Ebe, Harsh Vassaram, Arvin Edouard
  * Main coder: Daniel Chang
  */
-package application;
 
 import java.io.File;
 import java.util.ArrayList;
