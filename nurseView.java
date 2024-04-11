@@ -116,7 +116,30 @@ public class nurseView {
     private void displayFileContents(String fileName) {
         DatabaseManager db = new DatabaseManager();
         patient = (Patient) db.readPatientFile("./src/docDB/" + fileName);
-        fileContent.setText(patient.toString());
+        fileContent.setText(patient.toString() + "\n");
+        fileContent.appendText("Past Visits:\n");
+        for (int i = 0; i < patient.pastVisits.size(); i++) {
+            PastVisit temp = patient.pastVisits.get(i);
+            fileContent.appendText("Findings:\n");
+            fileContent.appendText(temp.findings + "\n");
+            fileContent.appendText("New prescriptions:\n");
+            for (int j = 0; j < temp.prescriptions.size(); j++) {
+                fileContent.appendText(temp.prescriptions.get(j) + "\n");
+            }
+        }
+
+        fileContent.appendText("\nHistory:\n");
+        for (int i = 0; i < patient.hist.healthIssues.size(); i++) {
+            fileContent.appendText(patient.hist.healthIssues.get(i) + "\n");
+        }
+        fileContent.appendText("Prescriptions:\n");
+        for (int i = 0; i < patient.hist.prescrips.size(); i++) {
+            fileContent.appendText(patient.hist.prescrips.get(i) + "\n");
+        }
+        fileContent.appendText("Immunization History:\n");
+        for (int i = 0; i < patient.hist.immunizations.size(); i++) {
+            fileContent.appendText(patient.hist.immunizations.get(i));
+        }
     }
 
     private void openMessages() {
