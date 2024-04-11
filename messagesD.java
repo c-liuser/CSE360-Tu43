@@ -26,7 +26,7 @@ public class messagesD {
 	TextArea messagesND;
 	Patient patient;
 
-	public Scene messagesNDFunction(Stage primaryStage, Patient p) {
+	public Scene messagesNDFunction(Patient p) {
 		patient = p;
 		// button display
 		sendBtn2 = new Button("Send");
@@ -117,7 +117,10 @@ public class messagesD {
 
 			// Add the message to the messages area
 			messagesND.appendText("Doctor: " + message + "\n\n");
+			// Save patient message data
 			patient.addMsg("Doctor: " + message + "\n\n");
+			DatabaseManager db = new DatabaseManager();
+			db.editPatientFile(patient);
 			// Clear the text field
 			ndMessageField.clear();
 		});

@@ -1,3 +1,5 @@
+package application;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -31,7 +33,6 @@ public class VisitNotes {
 	public Patient patient;
 	
 	public ArrayList<PastVisit> pastVisitsList;
-	//public History history;
 	public String history;
 	
 	private DatabaseManager db;
@@ -39,7 +40,6 @@ public class VisitNotes {
 	public Scene VisitNotesFunction(Stage primaryStage, File patientFile) {
 				
 		db = new DatabaseManager();
-		//String path = ("./src/patientDB/" + patientFile.getName());
 		String path = ("" + System.getProperty("user.dir") + "/src/patientDB/jb1.txt");
 		patient = db.readPatientFile(path);
 

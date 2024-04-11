@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,7 +56,7 @@ public class DatabaseManager {
       e.printStackTrace();
     }
   }
-  
+
   public Patient readPatientFile(String filePath) {
     Patient patient = null;
     try {
@@ -65,6 +64,7 @@ public class DatabaseManager {
       try {
         patient = (Patient) oit.readObject();
         System.out.println("Read Patient");
+        oit.close();
       } catch (ClassNotFoundException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -76,9 +76,10 @@ public class DatabaseManager {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+
     return patient;
   }
-  
+
   public void editPatientFile(Patient p) {
     try {
       ObjectOutputStream outputStream = new ObjectOutputStream(

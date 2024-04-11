@@ -173,4 +173,8 @@ class Patient implements Serializable {
 		this.messages.add(msg);
 	}
 
+	@Override
+	public String toString() {
+		return fName + " " + lName + " " + ((phoneNum != null) ? phoneNum : "");
+	}
 };
