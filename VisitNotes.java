@@ -145,6 +145,8 @@ public class VisitNotes {
 				PastVisit pv = new PastVisit();
 		        pv.changeFindings(findings);
 		        pv.addPrescription(newPrescription);
+		        
+		        patient.pastVisits.add(pv);
 				
 		        db.editPatientFile(patient);
 		        
@@ -157,86 +159,5 @@ public class VisitNotes {
 		return visitNotesScene;
 		
 	}
-	
-	public int numberOfLines(File f) {
-		int numLines = 0;
-		try {
-			FileReader fr = new FileReader(f);
-			BufferedReader br = new BufferedReader(fr);
-			String check = "1";
-			
-			while(!check.equals("past visits done")) {
-				check = br.readLine();
-				numLines++;
-			}
-			
-			br.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return numLines;
-	}
-	
-	//works when u save it the first time but errors if you close the scene and try it again, but then works if u delete the text that was
-	//added the first time not sure why
-	public void savesNotes(File f, String findings, String newPrescription) {
-		try {
-			
-			File temp = new File("./src/patientDB/temp.txt");
-			String filename = f.getName();
-			
-			FileWriter fw1 = new FileWriter(temp);
-			BufferedWriter outfile1 = new BufferedWriter(fw1);
-			FileReader fr1 = new FileReader(f);
-			BufferedReader br1 = new BufferedReader(fr1);
-
-			String check = "1";
-			int numLines = numberOfLines(f);
-			
-			for (int i = 0; i < numLines-1; i++) {
-				check = br1.readLine();
-				outfile1.append(check + "\n");
-			}
-			
-			outfile1.append("Findings: " + "\n");
-			outfile1.append(findings + "\n" + "\n");
-			outfile1.append("New Prescriptions:" + "\n");
-			outfile1.append(newPrescription + "\n" + "\n");
-			outfile1.append("past visits done");
-			
-			br1.close();
-			outfile1.close();
-			
-			f.delete();
-			
-			File fNew = new File("./src/patientDB/" + filename);
-			
-			FileWriter fw2 = new FileWriter(fNew);
-			BufferedWriter outfile2 = new BufferedWriter(fw2);
-			FileReader fr2 = new FileReader(temp);
-			BufferedReader br2 = new BufferedReader(fr2);
-			
-			check = "1";
-			numLines = numberOfLines(temp);
-			
-			for (int i = 0; i < numLines-1; i++) {
-				check = br2.readLine();
-				outfile2.append(check + "\n");
-			}
-			check = br2.readLine();
-			outfile2.append(check);
-			
-			outfile2.close();
-			br2.close();
-			
-			temp.delete();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}	
 	
 }
