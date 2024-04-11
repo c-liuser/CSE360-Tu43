@@ -1,5 +1,4 @@
-
-
+package application;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -60,7 +59,7 @@ public class LoginPage {
   
   public HBox screen;
   
-  private String loginDB = "" + System.getProperty("user.dir") + "/src/loginDB.txt";
+  private String loginDB = "" + System.getProperty("user.dir") + "/src/application/loginDB.txt";
   private String patientDB = "" + System.getProperty("user.dir") + "/src/patientDB/";
   private String docDB = "" + System.getProperty("user.dir") + "/src/docDB/";
   public Scene scene;
@@ -262,7 +261,7 @@ public class LoginPage {
         if(hasAccount) {
           // navigate to doc page
           if(docRB.isSelected()) {
-            doctorView dview = new doctorView();
+            doctorView dview = new doctorView("test");
             Window w = scene.getWindow();
             if(w instanceof Stage) {
               Stage s = (Stage) w;

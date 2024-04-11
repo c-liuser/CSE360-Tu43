@@ -1,4 +1,4 @@
-
+package application;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,12 +9,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.scene.layout.BorderPane;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 public class doctorView {
 	Scene scene;
 	
-	public doctorView(){
+	public doctorView(String userName){
 		BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #ADD8E6;"); // Light blue background
 
@@ -28,6 +32,32 @@ public class doctorView {
         homeBtn.setPrefSize(50, 50);
         Button msgBtn = new Button("msg");
         msgBtn.setPrefSize(50, 50);
+        
+        //home button functionality
+        homeBtn.setOnAction(new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent event) {
+        		LoginPage home = new LoginPage();
+                Window w = scene.getWindow();
+                if(w instanceof Stage) {
+                  Stage s = (Stage) w;
+                  s.setScene(home.getScene());
+                }
+        		
+        	}
+        });
+        
+        //msg button functionality
+        msgBtn.setOnAction(new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent event) {
+        		messagesD msgsD = new messagesD(new Patient("test", "test", "test","test"));
+                Window w = scene.getWindow();
+                if(w instanceof Stage) {
+                  Stage s = (Stage) w;
+                  s.setScene(msgsD.getScene());
+                }
+        		
+        	}
+        });
 
         // Main section
         VBox main = new VBox();
@@ -35,7 +65,7 @@ public class doctorView {
         main.setPadding(new Insets(20));
         sidebar.getChildren().addAll(homeBtn, msgBtn);
 
-        Label titleLabel = new Label("Welcome Doctor");
+        Label titleLabel = new Label("Welcome "+ userName);
         titleLabel.setFont(new Font("Arial", 24));
 
         HBox searchBox = new HBox();

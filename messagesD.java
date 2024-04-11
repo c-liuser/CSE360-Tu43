@@ -1,4 +1,7 @@
+package application;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 
 import javafx.geometry.Pos;
@@ -12,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class messagesD {
 
@@ -25,8 +29,9 @@ public class messagesD {
 	TextField ndMessageField, searchField;
 	TextArea messagesND;
 	Patient patient;
+	Scene scene;
 
-	public Scene messagesNDFunction(Stage primaryStage, Patient p) {
+	public messagesD(Patient p) {
 		patient = p;
 		// button display
 		sendBtn2 = new Button("Send");
@@ -95,15 +100,17 @@ public class messagesD {
 		/////////////////////////////////////////////////////////////////////
 		//////////////// Functionality
 
-		ndHomeBtn.setOnAction(e -> {
-			// change to the specific home page
-			pane2.getChildren().clear();
-			// redirect to the designated page Doctor
-			// Save patient message data
-			DatabaseManager db = new DatabaseManager();
-			db.editPatientFile(patient);
-
-		});
+		ndHomeBtn.setOnAction(new EventHandler<ActionEvent>() {
+	        	public void handle(ActionEvent event) {
+	        		doctorView dView = new doctorView("test");
+	                Window w = scene.getWindow();
+	                if(w instanceof Stage) {
+	                  Stage s = (Stage) w;
+	                  s.setScene(dView.getScene());
+	                }
+	        		
+	        	}
+	        });
 
 		search.setOnAction(e -> {
 			// search patient by First and Last Name
@@ -129,15 +136,16 @@ public class messagesD {
 		BorderPane.setMargin(root2, new Insets(10, 10, 10, 10));
 		BorderPane.setMargin(hbox2, new Insets(10, 10, 0, 10));
 
-		Scene ndMessageSection = new Scene(pane2, 700, 500);
-
-		return ndMessageSection;
-
+		scene = new Scene(pane2, 700, 500);
 	}
 
 	public void displayPatientMessages() {
 		for (String msg : patient.getMessages()) {
 			messagesND.appendText(msg);
 		}
+	}
+	
+	public Scene getScene() {
+		return scene;
 	}
 }

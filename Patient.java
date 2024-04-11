@@ -1,3 +1,4 @@
+package application;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,8 +53,8 @@ class Patient implements Serializable {
 		this.pastVisits = new ArrayList<PastVisit>();
 		this.hist = new History();
 
-		docDBFile = "./src/docDB/" + fNames.toLowerCase() + lNames.toLowerCase() + ".txt";
-		patientDBFile = "./src/patientDB/" + userNames + ".txt";
+		docDBFile = "" + System.getProperty("user.dir") + "/src/docDB/" + fNames.toLowerCase() + lNames.toLowerCase() + ".txt";
+		patientDBFile = "" + System.getProperty("user.dir") + "/src/patientDB/" + userName + ".txt";
 
 	}
 

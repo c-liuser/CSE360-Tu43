@@ -1,4 +1,4 @@
-
+package application;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,9 +11,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class DatabaseManager {
-  private String loginDB = "./src/loginDB.txt";
-  private String patientDB = "./src/patientDB/";
-  private String docDB = "./src/docDB/";
+  private String loginDB = "" + System.getProperty("user.dir") + "/src/application/loginDB.txt";
+  private String patientDB = "" + System.getProperty("user.dir") + "/src/patientDB/";
+  private String docDB = "" + System.getProperty("user.dir") + "/src/docDB/";
 
   public DatabaseManager() {
 
