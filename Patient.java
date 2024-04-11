@@ -19,14 +19,11 @@ class Patient implements Serializable {
 	private ArrayList<String> allergies;
 	private ArrayList<String> healthConcerns;
 	private boolean over12;
-	private ArrayList<String> history;
-	private ArrayList<String> medications;
-	private ArrayList<String> immunizations;
 	private ArrayList<String> messages;
 
 	public ArrayList<PastVisit> pastVisits;
 	public History hist;
-	
+
 	private String docDBFile;
 	private String patientDBFile;
 
@@ -37,14 +34,11 @@ class Patient implements Serializable {
 	public Patient(String user, String pass) {
 		userName = user;
 		// password = pass;
-		ArrayList<String> allergies = new ArrayList<String>();
-		ArrayList<String> healthConcerns = new ArrayList<String>();
-		ArrayList<String> history = new ArrayList<String>();
-		ArrayList<String> medications = new ArrayList<String>();
-		ArrayList<String> immunizations = new ArrayList<String>();
-		ArrayList<String> messages = new ArrayList<String>();
-		pastVisits = new ArrayList<PastVisit>();
-		hist = new History();
+		this.allergies = new ArrayList<String>();
+		this.healthConcerns = new ArrayList<String>();
+		this.messages = new ArrayList<String>();
+		this.pastVisits = new ArrayList<PastVisit>();
+		this.hist = new History();
 	}
 
 	public Patient(String fNames, String lNames, String userNames, String bdays) {
@@ -52,16 +46,12 @@ class Patient implements Serializable {
 		lName = lNames;
 		userName = userNames;
 		bday = bdays;
-		ArrayList<String> allergies = new ArrayList<String>();
-		ArrayList<String> healthConcerns = new ArrayList<String>();
-		ArrayList<String> history = new ArrayList<String>();
-		ArrayList<String> medications = new ArrayList<String>();
-		ArrayList<String> immunizations = new ArrayList<String>();
-		ArrayList<String> messages = new ArrayList<String>();
+		this.allergies = new ArrayList<String>();
+		this.healthConcerns = new ArrayList<String>();
+		this.messages = new ArrayList<String>();
+		this.pastVisits = new ArrayList<PastVisit>();
+		this.hist = new History();
 
-		pastVisits = new ArrayList<PastVisit>();
-		hist = new History();
-			
 		docDBFile = "./src/docDB/" + fNames.toLowerCase() + lNames.toLowerCase() + ".txt";
 		patientDBFile = "./src/patientDB/" + userNames + ".txt";
 
@@ -123,18 +113,6 @@ class Patient implements Serializable {
 		return healthConcerns;
 	}
 
-	public ArrayList<String> getHist() {
-		return history;
-	}
-
-	public ArrayList<String> getMeds() {
-		return medications;
-	}
-
-	public ArrayList<String> getImmun() {
-		return immunizations;
-	}
-
 	public String getDocDBFile() {
 		return docDBFile;
 	}
@@ -189,18 +167,6 @@ class Patient implements Serializable {
 
 	public void addConcern(String concern) {
 		this.healthConcerns.add(concern);
-	}
-
-	public void addHist(String data) {
-		this.history.add(data);
-	}
-
-	public void addMeds(String medication) {
-		this.medications.add(medication);
-	}
-
-	public void addImmun(String immun) {
-		this.immunizations.add(immun);
 	}
 
 	public void addMsg(String msg) {
