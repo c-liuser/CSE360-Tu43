@@ -224,8 +224,8 @@ public class PatientPortal {
     patient.setPhone(number.getText());
     PastVisit past = new PastVisit();
     
-    past.findings = number.getText();
-    patient.pastVisits.add(past);
+    //past.findings = number.getText();
+    //patient.pastVisits.add(past);
     
     db.editPatientFile(patient);
     fNameTF.setEditable(false);
@@ -233,6 +233,10 @@ public class PatientPortal {
     number.setEditable(false);
     patientInfo.getChildren().remove(submitBT);
     patientInfo.add(editBT, 1, 0);
+  }
+  
+  public void messageBTACtion() {
+    
   }
   
 
