@@ -41,7 +41,8 @@ public class VisitNotes {
 	public Scene VisitNotesFunction(Stage primaryStage, File patientFile) {
 				
 		db = new DatabaseManager();
-		String path = ("./src/patientDB/" + patientFile.getName());
+		//String path = ("./src/patientDB/" + patientFile.getName());
+		String path = ("" + System.getProperty("user.dir") + "/src/patientDB/jb1.txt");
 		patient = db.readPatientFile(path);
 
 		//panes
@@ -138,7 +139,8 @@ public class VisitNotes {
 		
 		saveBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				//save
+				//save				
+				
 				String findings = findingsField.getText();
 				String newPrescription = newPrescripsField.getText();
 				
@@ -147,6 +149,8 @@ public class VisitNotes {
 		        pv.addPrescription(newPrescription);
 				
 		        db.editPatientFile(patient);
+		        
+		     //   System.out.println(patient)
 			}
 		});
 		
