@@ -1,3 +1,4 @@
+package application;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class messagesP {
 
@@ -27,11 +31,12 @@ public class messagesP {
 	// for the buttons on the left column
 	VBox layoutBox, messagesArea;
 	/// According to the UI layout, 3 buttons needed
-	Button patientHomeBtn, sendBtn, messagesBtn;
+	Button patientHomeBtn, sendBtn, backBtn;
 	// According ot the UI layout, 1 messageField
 	TextField pMessageField;
 	TextArea messagesP;
 	Patient patient;
+	Scene scene;
 
 	public Scene messagesPFunction(Patient p) {
 
@@ -41,14 +46,36 @@ public class messagesP {
 		sendBtn = new Button("Send");
 		sendBtn.setPrefSize(40, 10);
 		sendBtn.setAlignment(Pos.BOTTOM_RIGHT);
-		messagesBtn = new Button("MSSGs");
-		messagesBtn.setPrefSize(40, 40);
+		//back button
+		backBtn = new Button("BACK");
+		backBtn.setPrefSize(40, 40);
+		backBtn.setOnAction(new EventHandler<>() {
+			public void handle(ActionEvent event) {
+				PatientPortal pportal = new PatientPortal(patient.getPatientDBFile());
+				Window w = scene.getWindow();
+				if(w instanceof Stage) {
+					Stage s = (Stage) w;
+					s.setScene(pportal.getScene());
+				}
+			}
+		});
+		//home button
 		patientHomeBtn = new Button("Home");
 		patientHomeBtn.setPrefSize(40, 40);
+		patientHomeBtn.setOnAction(new EventHandler<>() {
+			public void handle(ActionEvent event) {
+				LoginPage home = new LoginPage();
+				Window w = scene.getWindow();
+				if(w instanceof Stage) {
+					Stage s = (Stage) w;
+					s.setScene(home.getScene());
+				}
+			}
+		});
 
 		// Align buttons vertically, to the left of the scene
 		layoutBox = new VBox();
-		layoutBox.getChildren().addAll(patientHomeBtn, messagesBtn);
+		layoutBox.getChildren().addAll(patientHomeBtn, backBtn);
 		layoutBox.setSpacing(20);
 
 		// message field display
@@ -80,17 +107,6 @@ public class messagesP {
 
 		/////////////////////////////////////////////////////////////////////
 		//////////////// Functionality
-
-		patientHomeBtn.setOnAction(e -> {
-			// change to patient home
-			pane.getChildren().clear();
-			// redirect to the patient home view
-
-		});
-
-		messagesBtn.setOnAction(e -> {
-			// Load the messages page
-		});
 
 		sendBtn.setOnAction(e -> {
 			// clear the text field, load the message on the message area
@@ -125,9 +141,9 @@ public class messagesP {
 		BorderPane.setMargin(root, new Insets(10, 10, 10, 10));
 		BorderPane.setMargin(messagesP, new Insets(10, 10, 0, 10));
 
-		Scene pMessageSection = new Scene(pane, 700, 500);
+		scene = new Scene(pane, 700, 500);
 
-		return pMessageSection;
+		return scene;
 
 	}
 

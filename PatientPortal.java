@@ -24,6 +24,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class PatientPortal {
   
@@ -67,8 +69,33 @@ public class PatientPortal {
 	    welcomeLB = new Label("Welcome Patient");
 	    welcomeLB.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    
+	    //home button functionality
 	    homeBT = new Button("Home");
+		homeBT.setOnAction(new EventHandler<>() {
+			public void handle(ActionEvent event) {
+				LoginPage tView = new LoginPage();
+				Window w = scene.getWindow();
+				if(w instanceof Stage) {
+					Stage s = (Stage) w;
+					s.setScene(tView.getScene());
+				}
+			}
+		});
+	    
+		//messaging button funcitonality
 	    messagingBT = new Button("Messages");
+		messagingBT.setOnAction(new EventHandler<>() {
+			public void handle(ActionEvent event) {
+				messagesP messageP = new messagesP();
+				Window w = scene.getWindow();
+				if(w instanceof Stage) {
+					Stage s = (Stage) w;
+					s.setScene(messageP.messagesPFunction(patient));
+				}
+			}
+		});
+	    
+	    
 	    editBT = new Button("Edit");
 	    editBT.setOnAction(new EventHandler<ActionEvent>() {
 	      public void handle(ActionEvent event) {
