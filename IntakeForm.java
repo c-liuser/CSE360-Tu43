@@ -39,7 +39,6 @@ public class IntakeForm {
 	
 	public File patientFile;
 	public Patient patient;
-
 	
 	public ArrayList<PastVisit> pastVisitsList;
 	public History history;
@@ -50,7 +49,7 @@ public class IntakeForm {
 	public Scene IntakeFormFunction(Stage primaryStage, File patientFile) {
 		
 		db = new DatabaseManager();
-		String path = ("./src/patientDB/" + patientFile.getName());
+		String path = ("" + System.getProperty("user.dir") + "/src/patientDB/jb1.txt");
 		patient = db.readPatientFile(path);
 		
 		//panes
@@ -152,101 +151,36 @@ public class IntakeForm {
 			}
 		});
 		
+		saveBtn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				//save				
+				
+				if (over12.isSelected()) {
+					int height = Integer.parseInt(intakeHeight.getText());
+					int weight = Integer.parseInt(intakeWeight.getText());   
+					int temp = Integer.parseInt(intakeBodyTemp.getText());
+					int bloodPressure = Integer.parseInt(intakeBloodPressure.getText());
+					String allergies = intakeAllergies.getText();
+					String concerns = intakeHealthConcerns.getText();
+					
+					patient.setHeight(height);
+					patient.setWeight(weight);
+					patient.setTemp(temp);
+					patient.setPressure(bloodPressure);
+					patient.addAllergy(allergies);
+					patient.addConcern(concerns);
+					
+			        db.editPatientFile(patient);
+				}
+				
+				else {
+					System.out.println("Under 12");
+				}
+			}
+		});
+		
+		
 		Scene intakeFormScene = new Scene(mainPane, 800, 600);
 		return intakeFormScene;
 	}
-	
-	public ArrayList<PastVisit> getPastVisits(File f){
-	    int amountOfPastVisits = 0;
-	    PastVisit temp;
-	    ArrayList<PastVisit> pastVisits = new ArrayList<PastVisit>();
-	    try {
-	      FileReader fr = new FileReader(f);
-	      BufferedReader br = new BufferedReader(fr);
-	      String check = "1";
-	      //goes down to past visit in file
-	      while(!check.equals("Past Visits")) {
-	        check = br.readLine();
-	      }
-
-	      while(!check.equals("past visits done")) {
-	        while(!check.equals("Findings:")) {
-	          check = br.readLine();
-	        }
-	        pastVisits.add(new PastVisit());
-	        temp = pastVisits.get(amountOfPastVisits);
-	        temp.findings = br.readLine();
-	        
-	        while(!check.equals("New prescriptions:")) {
-	          check = br.readLine();
-	        }
-	        while(!check.equals("")) {
-	          check = br.readLine();
-	          temp.prescriptions.add(check);
-	        }
-	        check = br.readLine();
-	        amountOfPastVisits++;
-	      }
-	      br.close();
-	      
-	    } catch (IOException e) {
-	      // TODO Auto-generated catch block
-	      e.printStackTrace();
-	    } 
-
-	    return pastVisits;
-	  }
-	
-	public History getHistory(File f) {
-		History hist = new History();
-		try {
-			FileReader fr = new FileReader(f);
-		    BufferedReader br = new BufferedReader(fr);
-		    String check = "1";
-		    //goes down to history in file
-		    while(!check.equals("History")) {
-		    	check = br.readLine();
-		    }
-		    
-		    while (!check.equals("Past Visits")) {
-		    	while (!check.equals("Health Issue:")) {
-		    		check = br.readLine();
-		    	}
-		    	hist.addIssues(br.readLine());
-		    	check = br.readLine();
-		    	
-		    	while (!check.equals("Precriptions:")) {
-		    		check = br.readLine();
-		    	}
-		    	
-		    	while (!check.equals("")) {
-		    		check = br.readLine();
-		    		hist.addPrescrip(check);
-		    	}
-		    	
-		    	while (!check.equals("Immunization History:")) {
-		    		check = br.readLine();
-		    	}
-		    	
-		    	check = br.readLine();
-		    	
-		    	while (!check.equals("")) {
-		    		check = br.readLine();
-		    		hist.addImmunizations(check);
-		    	}
-		    	
-		    	check = br.readLine();
-		 
-		    }
-		    br.close();
-		    
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-		     e.printStackTrace();
-		}
-		
-		return hist;
-	}	
-	
-	
 }
