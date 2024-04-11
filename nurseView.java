@@ -1,5 +1,7 @@
 package application;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.scene.layout.BorderPane;
 
 public class nurseView {
@@ -28,6 +32,19 @@ public class nurseView {
         homeBtn.setPrefSize(50, 50);
         Button msgBtn = new Button("msg");
         msgBtn.setPrefSize(50, 50);
+        
+        //home button functionality
+        homeBtn.setOnAction(new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent event) {
+        		LoginPage home = new LoginPage();
+                Window w = scene.getWindow();
+                if(w instanceof Stage) {
+                  Stage s = (Stage) w;
+                  s.setScene(home.getScene());
+                }
+        		
+        	}
+        });
 
         // Main section
         VBox main = new VBox();

@@ -60,8 +60,8 @@ public class LoginPage {
   public HBox screen;
   
   private String loginDB = "" + System.getProperty("user.dir") + "/src/application/loginDB.txt";
-  private String patientDB = "" + System.getProperty("user.dir") + "/src/patientDB/";
-  private String docDB = "" + System.getProperty("user.dir") + "/src/docDB/";
+  private String patientDB = "" + System.getProperty("user.dir") + "/src/application/patientDB/";
+  private String docDB = "" + System.getProperty("user.dir") + "/src/application/docDB/";
   public Scene scene;
   public Stage stage;
   
@@ -214,11 +214,11 @@ public class LoginPage {
             if(hasAccount) {
               // navigate to doc page
               //patientComs.setText("signin successful");
-              PatientPortal portal = new PatientPortal();
+              PatientPortal portal = new PatientPortal(patientDB+username+".txt");
               Window w = scene.getWindow();
               if(w instanceof Stage) {
                 Stage s = (Stage) w;
-                s.setScene(portal.PatientPortalInit(patientDB+username+".txt"));
+                s.setScene(portal.getScene());
               }
             }else {
               patientComs.setText("Account does not exist");
@@ -296,7 +296,6 @@ public class LoginPage {
     });	
     
     scene = new Scene(screen, 750, 500);
-    // changes to vbox
   }
   
   public Scene getScene() {

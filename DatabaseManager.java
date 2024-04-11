@@ -12,8 +12,8 @@ import java.io.ObjectOutputStream;
 
 public class DatabaseManager {
   private String loginDB = "" + System.getProperty("user.dir") + "/src/application/loginDB.txt";
-  private String patientDB = "" + System.getProperty("user.dir") + "/src/patientDB/";
-  private String docDB = "" + System.getProperty("user.dir") + "/src/docDB/";
+  private String patientDB = "" + System.getProperty("user.dir") + "/src/application/patientDB/";
+  private String docDB = "" + System.getProperty("user.dir") + "/src/application/docDB/";
 
   public DatabaseManager() {
 
@@ -57,7 +57,6 @@ public class DatabaseManager {
       e.printStackTrace();
     }
   }
-  
   public Patient readPatientFile(String filePath) {
     Patient patient = null;
     try {
