@@ -1,4 +1,3 @@
-package application;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,16 +9,34 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.scene.layout.BorderPane;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 
 public class doctorView {
-	Scene scene;
-	
-	public doctorView(String userName){
-		BorderPane root = new BorderPane();
+    private Scene scene;
+    private ListView<String> listView;
+    private TextArea fileContent;
+    private Patient patient;
+
+    public doctorView() {
+        listView = new ListView<String>();
+        listView.setPrefSize(200, 200);
+
+        fileContent = new TextArea();
+        fileContent.setEditable(false);
+        fileContent.setPrefSize(400, 300);
+
+        BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #ADD8E6;"); // Light blue background
 
         // Side panel
@@ -32,32 +49,6 @@ public class doctorView {
         homeBtn.setPrefSize(50, 50);
         Button msgBtn = new Button("msg");
         msgBtn.setPrefSize(50, 50);
-        
-        //home button functionality
-        homeBtn.setOnAction(new EventHandler<ActionEvent>() {
-        	public void handle(ActionEvent event) {
-        		LoginPage home = new LoginPage();
-                Window w = scene.getWindow();
-                if(w instanceof Stage) {
-                  Stage s = (Stage) w;
-                  s.setScene(home.getScene());
-                }
-        		
-        	}
-        });
-        
-        //msg button functionality
-        msgBtn.setOnAction(new EventHandler<ActionEvent>() {
-        	public void handle(ActionEvent event) {
-        		messagesD msgsD = new messagesD(new Patient("test", "test", "test","test"));
-                Window w = scene.getWindow();
-                if(w instanceof Stage) {
-                  Stage s = (Stage) w;
-                  s.setScene(msgsD.getScene());
-                }
-        		
-        	}
-        });
 
         // Main section
         VBox main = new VBox();
@@ -65,7 +56,7 @@ public class doctorView {
         main.setPadding(new Insets(20));
         sidebar.getChildren().addAll(homeBtn, msgBtn);
 
-        Label titleLabel = new Label("Welcome "+ userName);
+        Label titleLabel = new Label("Welcome Doctor");
         titleLabel.setFont(new Font("Arial", 24));
 
         HBox searchBox = new HBox();
@@ -79,17 +70,65 @@ public class doctorView {
 
         searchBox.getChildren().addAll(searchField, searchButton);
 
-        main.getChildren().addAll(titleLabel, searchBox);
+        main.getChildren().addAll(titleLabel, searchBox, listView, fileContent);
+
+        // Search button clicked
+        searchButton.setOnAction(e -> searchUser(searchField.getText()));
+        msgBtn.setOnAction(e -> openMessages());
+
+        // Item in list listener
+        listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, fileName) -> {
+            if (fileName != null) {
+                System.out.println(fileName);
+                displayFileContents(fileName);
+            }
+        });
 
         // sidebar on left main on right
         root.setLeft(sidebar);
         root.setCenter(main);
-        
+
         scene = new Scene(root, 750, 500);
-	
-	}
-	
+
+    }
+
     public Scene getScene() {
         return scene;
+    }
+
+    private void searchUser(String input) {
+        listView.getItems().clear();
+
+        Path folderPath = Paths.get("./src/docDB");
+
+        try (Stream<Path> files = Files.list(folderPath)) {
+            listView.getItems().addAll(files
+                    .filter(file -> !Files.isDirectory(file))
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .filter(fileName -> fileName.startsWith(input.toLowerCase()))
+                    .collect(Collectors.toList()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void displayFileContents(String fileName) {
+        DatabaseManager db = new DatabaseManager();
+        patient = (Patient) db.readPatientFile("./src/docDB/" + fileName);
+        fileContent.setText(patient.toString());
+    }
+
+    private void openMessages() {
+        if (patient != null) {
+            messagesD docMsgs = new messagesD();
+            Scene messagesScene = docMsgs.messagesNDFunction(patient);
+            Stage stage = (Stage) scene.getWindow();
+            stage.setScene(messagesScene);
+            stage.show();
+        } else {
+            fileContent.setText("Please search and select a patient!");
+        }
     }
 }

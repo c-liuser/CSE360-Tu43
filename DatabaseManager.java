@@ -1,4 +1,3 @@
-package application;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,9 +10,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class DatabaseManager {
-  private String loginDB = "" + System.getProperty("user.dir") + "/src/application/loginDB.txt";
-  private String patientDB = "" + System.getProperty("user.dir") + "/src/application/patientDB/";
-  private String docDB = "" + System.getProperty("user.dir") + "/src/application/docDB/";
+  private String loginDB = "./src/loginDB.txt";
+  private String patientDB = "./src/patientDB/";
+  private String docDB = "./src/docDB/";
 
   public DatabaseManager() {
 
@@ -57,6 +56,7 @@ public class DatabaseManager {
       e.printStackTrace();
     }
   }
+
   public Patient readPatientFile(String filePath) {
     Patient patient = null;
     try {
@@ -64,6 +64,7 @@ public class DatabaseManager {
       try {
         patient = (Patient) oit.readObject();
         System.out.println("Read Patient");
+        oit.close();
       } catch (ClassNotFoundException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -75,9 +76,10 @@ public class DatabaseManager {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+
     return patient;
   }
-  
+
   public void editPatientFile(Patient p) {
     try {
       ObjectOutputStream outputStream = new ObjectOutputStream(

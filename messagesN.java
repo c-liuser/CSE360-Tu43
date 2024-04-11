@@ -1,4 +1,3 @@
-package application;
 
 import javafx.geometry.Insets;
 
@@ -27,7 +26,7 @@ public class messagesN {
 	TextArea messagesN;
 	Patient patient;
 
-	public Scene messagesNFunction(Stage primaryStage, Patient p) {
+	public Scene messagesNFunction(Patient p) {
 		patient = p;
 		// button display
 		sendBtn2 = new Button("Send");
@@ -76,7 +75,7 @@ public class messagesN {
 		messagesN.setPrefHeight(500);
 		messagesN.setPrefWidth(400);
 		messagesN.setEditable(false);
-		displayPatientMessages();
+
 		messagesArea2 = new VBox();
 
 		messagesArea2.getChildren().add(messagesN);
@@ -93,17 +92,16 @@ public class messagesN {
 		pane2.setCenter(hbox2);
 		pane2.setBottom(root2);
 
+		// Display saved messages
+		displayPatientMessages();
 		/////////////////////////////////////////////////////////////////////
 		//////////////// Functionality
 
 		nHomeBtn.setOnAction(e -> {
 			// change to the specific home page
 			pane2.getChildren().clear();
-			// redirect to the designated page Nurse
-			// Save patient message data
+			// TODO: redirect to the designated page Nurse
 
-			DatabaseManager db = new DatabaseManager();
-			db.editPatientFile(patient);
 		});
 
 		search.setOnAction(e -> {
@@ -118,7 +116,10 @@ public class messagesN {
 
 			// Add the message to the messages area
 			messagesN.appendText("Nurse: " + message + "\n\n");
+			// Save patient message data
 			patient.addMsg("Nurse: " + message + "\n\n");
+			DatabaseManager db = new DatabaseManager();
+			db.editPatientFile(patient);
 			// Clear the text field
 			nMessageField.clear();
 		});
@@ -137,8 +138,8 @@ public class messagesN {
 	}
 
 	private void displayPatientMessages() {
-		for (String msg : patient.getMessages()) {
-			messagesN.appendText(msg);
+		for (int i = 0; i < patient.getMessages().size(); i++) {
+			messagesN.appendText(patient.getMessages().get(i));
 		}
 	}
 }

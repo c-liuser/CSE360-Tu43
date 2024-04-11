@@ -1,4 +1,3 @@
-package application;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,8 +52,8 @@ class Patient implements Serializable {
 		this.pastVisits = new ArrayList<PastVisit>();
 		this.hist = new History();
 
-		docDBFile = "" + System.getProperty("user.dir") + "/src/docDB/" + fNames.toLowerCase() + lNames.toLowerCase() + ".txt";
-		patientDBFile = "" + System.getProperty("user.dir") + "/src/patientDB/" + userName + ".txt";
+		docDBFile = "./src/docDB/" + fNames.toLowerCase() + lNames.toLowerCase() + ".txt";
+		patientDBFile = "./src/patientDB/" + userNames + ".txt";
 
 	}
 
@@ -174,4 +173,8 @@ class Patient implements Serializable {
 		this.messages.add(msg);
 	}
 
+	@Override
+	public String toString() {
+		return fName + " " + lName + " " + ((phoneNum != null) ? phoneNum : "");
+	}
 };

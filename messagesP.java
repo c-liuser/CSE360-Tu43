@@ -1,4 +1,3 @@
-package application;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -34,7 +33,7 @@ public class messagesP {
 	TextArea messagesP;
 	Patient patient;
 
-	public Scene messagesPFunction(Stage primaryStage, Patient p) {
+	public Scene messagesPFunction(Patient p) {
 
 		patient = p;
 
@@ -86,8 +85,7 @@ public class messagesP {
 			// change to patient home
 			pane.getChildren().clear();
 			// redirect to the patient home view
-			DatabaseManager db = new DatabaseManager();
-			db.editPatientFile(patient);
+
 		});
 
 		messagesBtn.setOnAction(e -> {
@@ -103,7 +101,10 @@ public class messagesP {
 
 			// Add the message to the messages area
 			messagesP.appendText("Me: " + message + "\n");
+			// Save patient message data
 			patient.addMsg("Me: " + message + "\n");
+			DatabaseManager db = new DatabaseManager();
+			db.editPatientFile(patient);
 			// Clear the text field
 			pMessageField.clear();
 
