@@ -2,7 +2,6 @@
  * CSE360 Project
  * Team Tu43
  * Team members: Daniel Chang, Cole Liu, Josh Ebe, Harsh Vassaram, Arvin Edouard
- * Main coder: Daniel Chang
  */
 
 import java.io.File;
