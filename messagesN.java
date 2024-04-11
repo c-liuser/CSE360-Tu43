@@ -1,4 +1,6 @@
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 
 import javafx.geometry.Pos;
@@ -12,48 +14,72 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class messagesN {
 
 	// contains all the elements
 	BorderPane pane2;
 	// for the buttons on the left column
-	VBox layoutBox2, searchList, messagesArea2;
+	VBox layoutBox2, messagesArea2;
 	/// According to the UI layout, 3 buttons needed
-	Button nHomeBtn, pSearch, messagesBtn2, sendBtn2, search;
+	Button nHomeBtn, sendBtn2, backBT;
 	// According to the UI layout, 1 messageField
-	TextField nMessageField, searchField;
+	TextField nMessageField;
 	TextArea messagesN;
 	Patient patient;
+	Scene nMessageSection;
 
 	public Scene messagesNFunction(Patient p) {
 		patient = p;
 		// button display
+//		sendBtn2 = new Button("Send");
+//		sendBtn2.setPrefSize(40, 10);
+//		sendBtn2.setAlignment(Pos.BOTTOM_RIGHT);
+//		pSearch = new Button("Search");
+//		pSearch.setPrefSize(40, 40);
+//		messagesBtn2 = new Button("MSSGs");
+//		messagesBtn2.setPrefSize(40, 40);
+//		nHomeBtn = new Button("Home");
+//		nHomeBtn.setPrefSize(40, 40);
+//		search = new Button("Search");
+//		search.setPrefSize(50, 20);
+		
 		sendBtn2 = new Button("Send");
-		sendBtn2.setPrefSize(40, 10);
+		sendBtn2.setPrefSize(60, 10);
 		sendBtn2.setAlignment(Pos.BOTTOM_RIGHT);
-		pSearch = new Button("Search");
-		pSearch.setPrefSize(40, 40);
-		messagesBtn2 = new Button("MSSGs");
-		messagesBtn2.setPrefSize(40, 40);
-		nHomeBtn = new Button("Home");
-		nHomeBtn.setPrefSize(40, 40);
-		search = new Button("Search");
-		search.setPrefSize(50, 20);
+	        // back button
+		backBT = new Button("BACK");
+		backBT.setPrefSize(100, 50);
+		backBT.setOnAction(new EventHandler<>() {
+	            public void handle(ActionEvent event) {
+	                nurseView nurseV = new nurseView();
+	                Window w = nMessageSection.getWindow();
+	                if (w instanceof Stage) {
+	                    Stage s = (Stage) w;
+	                    s.setScene(nurseV.getScene());
+	                }
+	            }
+	        });
+	        // home button
+		nHomeBtn = new Button("Log out");
+		nHomeBtn.setPrefSize(100, 50);
+		nHomeBtn.setOnAction(new EventHandler<>() {
+	            public void handle(ActionEvent event) {
+	                LoginPage home = new LoginPage();
+	                Window w = nMessageSection.getWindow();
+	                if (w instanceof Stage) {
+	                    Stage s = (Stage) w;
+	                    s.setScene(home.getScene());
+	                }
+	            }
+	        });
+
 
 		// Align buttons vertically, to the left of the scene
 		layoutBox2 = new VBox();
-		layoutBox2.getChildren().addAll(nHomeBtn, pSearch, messagesBtn2);
+		layoutBox2.getChildren().addAll(nHomeBtn, backBT);
 		layoutBox2.setSpacing(20);
-
-		searchField = new TextField();
-		searchField.setPromptText("Search");
-		searchField.setPrefWidth(150);
-		searchField.setMaxWidth(140);
-		searchList = new VBox();
-		search.setAlignment(Pos.BASELINE_LEFT);
-		searchList.getChildren().addAll(searchField, search);
-		searchList.setSpacing(10);
 
 		// message field display
 		nMessageField = new TextField();
@@ -79,7 +105,7 @@ public class messagesN {
 		messagesArea2 = new VBox();
 
 		messagesArea2.getChildren().add(messagesN);
-		hbox2.getChildren().addAll(searchList, messagesArea2);
+		hbox2.getChildren().addAll(messagesArea2);
 
 		// Create a StackPane to overlay the TextField and Button
 		StackPane root2 = new StackPane();
@@ -97,17 +123,7 @@ public class messagesN {
 		/////////////////////////////////////////////////////////////////////
 		//////////////// Functionality
 
-		nHomeBtn.setOnAction(e -> {
-			// change to the specific home page
-			pane2.getChildren().clear();
-			// TODO: redirect to the designated page Nurse
-
-		});
-
-		search.setOnAction(e -> {
-			// search patient by First and Last Name
-		});
-
+	
 		sendBtn2.setOnAction(e -> {
 			// clear the text field, load the message on the message area
 			// send to the patient
@@ -127,11 +143,10 @@ public class messagesN {
 		//////////////////////////////////////////////////
 
 		BorderPane.setMargin(layoutBox2, new Insets(10, 10, 10, 10));
-		BorderPane.setMargin(searchList, new Insets(10, 10, 10, 10));
 		BorderPane.setMargin(root2, new Insets(10, 10, 10, 10));
 		BorderPane.setMargin(hbox2, new Insets(10, 10, 0, 10));
 
-		Scene nMessageSection = new Scene(pane2, 700, 500);
+		nMessageSection = new Scene(pane2, 700, 500);
 
 		return nMessageSection;
 

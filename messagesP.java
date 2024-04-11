@@ -43,11 +43,11 @@ public class messagesP {
 
 		// button display
 		sendBtn = new Button("Send");
-		sendBtn.setPrefSize(40, 10);
+		sendBtn.setPrefSize(60, 10);
 		sendBtn.setAlignment(Pos.BOTTOM_RIGHT);
 		// back button
 		backBtn = new Button("BACK");
-		backBtn.setPrefSize(50, 50);
+		backBtn.setPrefSize(100, 50);
 		backBtn.setOnAction(new EventHandler<>() {
 			public void handle(ActionEvent event) {
 				PatientPortal pportal = new PatientPortal(patient.getPatientDBFile());
@@ -60,7 +60,7 @@ public class messagesP {
 		});
 		// home button
 		patientHomeBtn = new Button("Log out");
-		patientHomeBtn.setPrefSize(50, 50);
+		patientHomeBtn.setPrefSize(100, 50);
 		patientHomeBtn.setOnAction(new EventHandler<>() {
 			public void handle(ActionEvent event) {
 				LoginPage home = new LoginPage();
